@@ -1,0 +1,25 @@
+#!/bin/sh
+# Wiktionary opener
+
+WIKTIONARY_URL=https://en.wiktionary.org/wiki
+BROWSER_WINDOW_CLASS='Firefox'
+
+# Read an input from an argument or the dmenu prompt
+if [ ! -z "$1" ]; then
+    input=$1
+else
+    input=`dmenu -p "Type a word: " </dev/null`
+    if [ "$input" = "" ]; then
+        exit 0;
+    fi
+fi
+
+# Make input lowercase
+# word=`echo $input | tr '[:upper:]' '[:lower:]'`
+
+word=$input
+# Open a link
+xdg-open "$WIKTIONARY_URL/$word"
+
+# Focus the opened link container
+i3-msg "[class=$BROWSER_WINDOW_CLASS] focus" >/dev/null
