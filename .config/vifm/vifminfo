@@ -1,0 +1,102 @@
+# You can edit this file by hand, but it's recommended not to do that.
+
+# Marks:
+'H
+	/home/john/
+	..
+1548532994
+'b
+	/home/john/bin/
+	..
+1548532994
+'h
+	/home/john/
+	..
+1548532994
+
+# Bookmarks:
+
+# TUI:
+ar
+q0
+v2
+ov
+m-1
+l2
+r2
+
+# Left window history (oldest to newest):
+d/home/john
+	..
+0
+d/home
+	john
+1
+d/
+	sys
+16
+d/sys
+	..
+0
+d/
+	sys
+16
+d
+
+# Right window history (oldest to newest):
+D/home/john
+	Scripts
+3
+D/home/john/Scripts
+	..
+0
+D/home/john
+	Tools
+5
+D/home
+	john
+1
+D/
+	home
+5
+D/home
+	john
+1
+D/home/john
+	Temp
+4
+D/home
+	john
+1
+D/
+	tmp
+17
+D
+
+# Command line history (oldest to newest):
+:q
+:map
+:nmap
+
+# Search history (oldest to newest):
+
+# Prompt history (oldest to newest):
+
+# Local filter history (oldest to newest):
+
+# Registers:
+
+# Directory stack (oldest to newest):
+
+# Trash content:
+
+# State:
+f
+i1
+[.1
+[F
+F
+I1
+].1
+]F
+s0
