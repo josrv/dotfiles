@@ -2,9 +2,8 @@
 # ~/.bash_profile
 #
 
-export EDITOR="vim"
-export BROWSER="surf"
-export PATH="$HOME/Scripts:$PATH"
+export EDITOR="nvim"
+export BROWSER="firefox"
 
 [[ -f ~/.bashrc ]] && . ~/.bashrc
 
