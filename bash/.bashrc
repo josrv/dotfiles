@@ -5,11 +5,15 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-PS1='[\u@\h \W]\$ '
+export PATH=$PATH:$HOME/.scripts/bin
 
-alias ls='ls -hN --color=auto'
+alias ls='ls -hNla --color=auto'
+PS1='\[\e[94m\][\u@\h \W]\$\[\e[m\] '
+
+# Aliases
 alias p="sudo pacman"
-alias s="sudo systemctl"
+alias SS="sudo systemctl"
 alias v="nvim"
 alias g="git"
 alias psg="ps aux | grep"
+[ -f ~/.git-completion.bash ] && . ~/.git-completion.bash
