@@ -12,8 +12,7 @@ PS1='\[\e[94m\][\u@\h \W]\$\[\e[m\] '
 
 # Aliases
 alias p="sudo pacman"
-alias SS="sudo systemctl"
-alias v="nvim"
+alias v="vim"
 alias g="git"
 alias psg="ps aux | grep"
 [ -f ~/.git-completion.bash ] && . ~/.git-completion.bash

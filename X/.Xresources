@@ -1,0 +1,14 @@
+#define t_background #1f1e1b
+#define t_foreground #f2f2f2
+
+URxvt.font: xft:Liberation Mono:size=12
+URxvt.scrollBar: false
+URxvt.background: t_background
+URxvt.foreground: t_foreground
+
+Xft.autohint: 0
+Xft.lcdfilter: lcddefault
+Xft.hintstyle: hintslight
+Xft.hinting: 1
+Xft.antialias: 1
+Xft.rgba: rgb

@@ -40,4 +40,4 @@ xset r rate 200 40
 # Background
 ~/.fehbg &
 
-exec i3
+exec $WINDOW_MANAGER

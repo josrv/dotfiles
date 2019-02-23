@@ -2,12 +2,13 @@
 # ~/.bash_profile
 #
 
-export EDITOR="nvim"
-export BROWSER="firefox"
+export EDITOR="vim"
+export BROWSER="icecat"
+export WINDOW_MANAGER="bspwm"
 
 [[ -f ~/.bashrc ]] && . ~/.bashrc
 
 # Launch X on the /dev/tty1
 if [ "$(tty)" = "/dev/tty1" ]; then
-    pgrep -x i3 || exec startx
+    pgrep -x $WINDOW_MANAGER || exec startx
 fi
