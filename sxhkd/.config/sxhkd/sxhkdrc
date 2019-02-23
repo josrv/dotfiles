@@ -122,4 +122,4 @@ super + {Left,Down,Up,Right}
 
 # apps
 super + j
-    icecat
+    firefox
