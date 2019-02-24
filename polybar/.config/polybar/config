@@ -1,11 +1,5 @@
 [bar/bar0]
-; Use either of the following command to list available outputs:
-; If unspecified, the application will pick the first one it finds.
-; $ polybar -m | cut -d ':' -f 1
-; $ xrandr -q | grep " connected" | cut -d ' ' -f1
 monitor = ${env:MONITOR:LVDS1}
-
-; Use the specified monitor as a fallback if the main one is not found.
 monitor-fallback = LVDS1
 
 ; Require the monitor to be in connected state
@@ -82,16 +76,19 @@ module-margin = 1
 ;   font-2 = Termsynu:size=8;-1
 ;   font-3 = FontAwesome:size=10
 ; See the Fonts wiki page for more details
-font-0 = xft:Hack:size=9;2
-font-1 = x
+font-0 = "Font Awesome 5 Free,Font Awesome 5 Free Regular:style=Regular:size=9"
+; font-0 = "Wuncon Siji:style=Regular:size=9;2"
+font-1 = "Andika:style=Regular:size=9;2"
+font-3 = "Dejavu Sans:style=Book"
+
 
 ; Modules are added to one of the available blocks
 ;   modules-left = cpu ram
 ;   modules-center = xwindow xbacklight
 ;   modules-right = ipc clock
-modules-left = i3
+modules-left = bspwm
 modules-center = 
-modules-right = layout wireless-network pulseaudio battery date
+modules-right = wireless-network alsa battery date
 
 ; The separator will be inserted between the output of each module
 separator =
@@ -155,7 +152,7 @@ tray-scale = 1.0
 ; Currently supported WM's:
 ;   bspwm
 ;   i3 (requires: `override-redirect = true`)
-wm-restack =
+wm-restack = bspwm
 
 ; Enable support for inter-process messaging
 ; See the Messaging wiki page for more details.
@@ -169,39 +166,31 @@ click-right =
 scroll-up =
 scroll-down =
 double-click-left =
-double-click-middle =
-double-click-right =
 
-; Requires polybar to be built with xcursor support (xcb-util-cursor)
-; Possible values are:
-; - default   : The default pointer as before, can also be an empty string (default)
-; - pointer   : Typically in the form of a hand
-; - ns-resize : Up and down arrows, can be used to indicate scrolling
-cursor-click = 
-cursor-scroll = 
 [colors]
-green = #6eac7e
-red = #d58a83
+white = #ffffff
+green = #398277
+red = #c14566
 
-[module/i3]
-type = internal/i3
+[module/bspwm]
+type = internal/bspwm
 pin-workspaces = true
-strip-wsnumbers = true
-index-sort = false
-enable-click = true
-fuzzy-match = true
+enable-click = false
+enable-scroll = false
+
+format = <label-state> <label-mode>
+
+label-empty-padding = 1
+label-focused-padding = 1
+label-urgent-padding = 1
+label-occupied-padding = 1
 
 label-focused = %name%
 label-focused-foreground = #ffffff
 label-focused-background = #3f3f3f
-label-focused-underline = #fba922
-label-focused-padding = 2
-
-label-unfocused = %index%
-label-unfocused-padding = 2
+;label-focused-underline = #fba922
 
 label-urgent-background = ${colors.red}
-label-urgent-padding = 2
 
 [module/battery]
 type = internal/battery
@@ -211,39 +200,32 @@ adapter = AC
 poll-interval = 5
 label-discharging = 🔋%percentage%
 label-charging = ⚡%percentage%%
-
 format-full-foreground = ${colors.green}
 label-full = ⚡
 
-[module/pulseaudio]
-type = internal/pulseaudio
-
-;sink = alsa_output.pci-0000_12_00.3.analog-stereo
-use-ui-max = true
-interval = 5
-
 [module/date]
 type = internal/date
-
-; Seconds to sleep between updates
 interval = 60
 label = %date% %time%
-
-date = %a, %d %b %Y 
+date = %a, %d %b
 time = %H:%M
 
 [module/wireless-network]
 type = internal/network
-interface = wlp3s0
+interface = wlp2s0
 interval = 5
-
-label-connected = %{A1:networkmanager_dmenu:} %essid% %{A}
-label-connected-foreground = ${colors.green}
-
-label-disconnected = wifi
-label-disconnected-foreground = ${colors.red}
+label-connected = " %essid% "
+label-connected-foreground = ${colors.white}
+label-connected-background = ${colors.green}
+label-disconnected = "        " 
+label-disconnected-background = ${colors.red}
 
 [module/layout]
 type = internal/xkeyboard
 format = <label-layout>
 label-layout = %layout%
+
+[module/alsa]
+type = internal/alsa
+master-soundcard = default
+master-mixer = Master

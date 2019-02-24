@@ -36,6 +36,7 @@ fi
 setxkbmap -layout us,ru -variant colemak, -option 'grp:win_space_toggle' -option 'caps:backspace'
 xmodmap -e "clear Lock"
 xset r rate 200 40
+xinput disable "SynPS/2 Synaptics TouchPad"
 
 # Background
 ~/.fehbg &
