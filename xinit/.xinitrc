@@ -32,6 +32,14 @@ if [ -d /etc/X11/xinit/xinitrc.d ] ; then
  unset f
 fi
 
+# Display
+xrandr --output DP1 --auto --output LVDS1 --auto --below DP1
+
+desktop_monitor_status="$(cat /sys/class/drm/card0-DP-1/status)"
+if [ "$desktop_monitor_status" = "connected" ]; then
+    xrandr --output LVDS1 --off
+fi
+
 # Keyboard
 setxkbmap -layout us,ru -variant colemak, -option 'grp:win_space_toggle' -option 'caps:backspace'
 xmodmap -e "clear Lock"
@@ -41,4 +49,4 @@ xinput disable "SynPS/2 Synaptics TouchPad"
 # Background
 ~/.fehbg &
 
-exec $WINDOW_MANAGER
+exec bspwm

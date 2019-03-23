@@ -17,6 +17,9 @@ alias g="git"
 alias psg="ps aux | grep"
 [ -f ~/.git-completion.bash ] && . ~/.git-completion.bash
 
+# Settings
+#set -o vi
+
 # fd - cd to selected directory
 fd() {
   local dir
@@ -56,5 +59,5 @@ fe() {
 ce() {
     local file
     file=$(find -L ~/.dotfiles/ -type f | fzf)
-    [[ -n "$file" ]] && $EDITOR "$file"
+    [[ -n "$file" ]] && $EDITOR "$file" && echo "Edited $file"
 }

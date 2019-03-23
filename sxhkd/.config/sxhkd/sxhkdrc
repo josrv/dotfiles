@@ -14,6 +14,10 @@ super + Escape
 # bspwm hotkeys
 #
 
+# kill X session
+super + shift + w
+    kill -9 $(pidof bspwm)
+    
 # quit/restart bspwm
 super + ctrl + {q,r}
 	bspc {quit,wm -r}
@@ -141,9 +145,6 @@ super + p
 super + shift + p
     urxvt -e peerflix "$(xclip -o -selection clipboard)" --mpv
 
-super + shift + c
-    telegram-desktop
-    
 super + l
     wikt
 

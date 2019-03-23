@@ -12,13 +12,11 @@ set undofile
 
 " show numbers in the sidebar
 set relativenumber
+set number
 " show current command
 set showcmd
 " disable mode label
 set noshowmode
-
-" Custom bindings
-map l :call Wikt()<cr>
 
 " Plugins
 call plug#begin('~/.vim/plugged')
@@ -27,7 +25,22 @@ Plug 'itchyny/lightline.vim'
 Plug 'mengelbrecht/lightline-bufferline'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'rust-lang/rust.vim'
-Plug 'racer-rust/vim-racer'
+"Plug 'racer-rust/vim-racer'
+"Plug 'prabirshrestha/asyncomplete.vim'
+"Plug 'w0rp/ale'
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+
+if executable('rls')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'rls',
+        \ 'cmd': {server_info->['rustup', 'run', 'nightly', 'rls']},
+        \ 'whitelist': ['rust'],
+        \ })
+endif
+
 call plug#end()
 " Plugin configs
 let g:lightline = {
@@ -50,15 +63,24 @@ let g:lightline#bufferline#show_number  = 1
 let g:lightline#bufferline#unnamed      = '[Unnamed]'
 
 " Disable arrow keys for navigation
-nnoremap <up> <nop>
-nnoremap <down> <nop>
-inoremap <up> <nop>
-inoremap <down> <nop>
+"nnoremap <up> <nop>
+"nnoremap <down> <nop>
+"inoremap <up> <nop>
+"inoremap <down> <nop>
 inoremap <left> <nop>
 inoremap <right> <nop>
 
 nnoremap <left> :bp<CR>
 nnoremap <right> :bn<CR>
+
+" Custom bindings
+map l :call Wikt()<cr>
+map ; A;<Esc>
+
+"au FileType rust nmap gd <Plug>(rust-def)
+"au FileType rust nmap gs <Plug>(rust-def-split)
+"au FileType rust nmap gx <Plug>(rust-def-vertical)
+au FileType rust nmap gd <Plug>(rust-doc)
 
 " Colemak mappings
 " Up/down/left/right {{{
