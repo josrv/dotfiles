@@ -1,6 +1,9 @@
-refresh-on-startup yes
 reload-threads 2
-keep-articles-days 30
+auto-reload yes
+reload-time 30
+keep-articles-days 120
+
+confirm-exit yes
 
 bind-key i open
 

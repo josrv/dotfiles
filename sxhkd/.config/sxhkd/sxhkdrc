@@ -135,7 +135,7 @@ super + j
 
 # vifm
 super + v
-    termite -e "vifm $HOME"
+    $TERMINAL -e "vifm $HOME"
 
 # Play/pause mpd
 super + p
@@ -143,7 +143,7 @@ super + p
 
 # Launch Peerflix with a magnet link from clipboard
 super + shift + p
-    urxvt -e peerflix "$(xclip -o -selection clipboard)" --mpv
+    $TERMINAL -e peerflix "$(xclip -o -selection clipboard)" --mpv
 
 super + l
     wikt
@@ -152,7 +152,13 @@ super + shift + l
     wikt `xclip -o`
 
 super + shift + v
-    termite -e "sh -c 'sudo rc-service streisand restart'"
+    $TERMINAL -e "sh -c 'sudo rc-service streisand restart'"
 
 super + F5
     screenshot-dmenu
+
+# Attach to Newsboat tmux session. Launch if there is no session.
+super + shift + f
+    tmux has-session -t newsboat 2>/dev/null || tmux new -d -s newsboat newsboat; \
+    $TERMINAL -e "tmux attach -t newsboat"
+    
