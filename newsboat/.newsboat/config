@@ -1,0 +1,21 @@
+refresh-on-startup yes
+reload-threads 2
+keep-articles-days 30
+
+bind-key i open
+
+bind-key n next
+bind-key e prev
+
+bind-key N next-unread
+bind-key E prev-unread
+bind-key H prev-feed
+bind-key I next-feed
+
+bind-key n down article
+bind-key e up article
+bind-key h prev article
+bind-key i next article
+
+bind-key h quit articlelist
+
