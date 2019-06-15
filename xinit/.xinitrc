@@ -41,12 +41,12 @@ if [ "$desktop_monitor_status" = "connected" ]; then
 fi
 
 # Keyboard
-setxkbmap -layout us,ru -variant colemak, -option 'grp:win_space_toggle' -option 'caps:backspace'
+setxkbmap -layout us,ru -option 'grp:win_space_toggle' -option 'caps:escape'
 xmodmap -e "clear Lock"
 xset r rate 200 40
 xinput disable "SynPS/2 Synaptics TouchPad"
 
-# Background
-~/.fehbg &
+# Background image
+. ~/.fehbg &
 
 exec bspwm

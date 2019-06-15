@@ -440,6 +440,6 @@ nnoremap ,C :!gvim --remote-tab-silent $MYVIFMRC &<cr>
 nnoremap ,w :set wrap!<cr>
 
 " Colemak
-nnoremap n j
-nnoremap e k
-nnoremap i l
+" nnoremap n j
+" nnoremap e k
+" nnoremap i l

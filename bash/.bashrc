@@ -20,6 +20,12 @@ alias psg="ps aux | grep"
 # Settings
 #set -o vi
 
+# File manager (fff with cd-on-exit)
+f() {
+    fff "$@"
+    cd "$(cat "${XDG_CACHE_HOME:=${HOME}/.cache}/fff/.fff_d")"
+}
+
 # fd - cd to selected directory
 fd() {
   local dir

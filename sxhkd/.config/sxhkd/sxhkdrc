@@ -3,7 +3,7 @@ super + Return
 	termite
 
 # program launcher
-super + s
+super + d
 	dmenu_run
 
 # make sxhkd reload its configuration files:
@@ -31,8 +31,8 @@ super + m
 	bspc desktop -l next
 
 # send the newest marked node to the newest preselected node
-super + y
-	bspc node newest.marked.local -n newest.!automatic.local
+# super + y
+#	bspc node newest.marked.local -n newest.!automatic.local
 
 # swap the current node and the biggest node
 super + g
@@ -55,7 +55,7 @@ super + ctrl + {m,x,y,z}
 #
 
 # focus the node in the given direction
-super + {_,shift + }{h,n,e,i}
+super + {_,shift + }{h,j,k,l}
 	bspc node -{f,s} {west,south,north,east}
 
 # focus the node for the given path jump
@@ -75,7 +75,7 @@ super + {grave,Tab}
 	bspc {node,desktop} -f last
 
 # focus the older or newer node in the focus history
-super + {o,i}
+super + {',i}
 	bspc wm -h off; \
 	bspc node {older,newer} -f; \
 	bspc wm -h on
@@ -109,11 +109,11 @@ super + ctrl + shift + space
 #
 
 # expand a window by moving one of its side outward
-super + alt + {h,n,e,i}
+super + alt + {h,j,k,l}
 	bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}
 
 # contract a window by moving one of its side inward
-super + alt + shift + {h,n,e,i}
+super + alt + shift + {h,j,k,l}
 	bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
 
 # move a floating window
@@ -130,26 +130,32 @@ XF86AudioLowerVolume
 XF86AudioMute
     amixer -c 0 -q set Master toggle
 
-super + j
-    firefox
+super + y
+    $BROWSER
 
-# vifm
+super + m
+    idea-launch
+
+# Launch fff
 super + v
-    $TERMINAL -e "vifm $HOME"
+    $TERMINAL -e "fff"
 
 # Play/pause mpd
 super + p
     mpc toggle
 
 # Launch Peerflix with a magnet link from clipboard
-super + shift + p
-    $TERMINAL -e peerflix "$(xclip -o -selection clipboard)" --mpv
+# super + shift + p
+#     $TERMINAL -e peerflix "$(xclip -o -selection clipboard)" --mpv
 
-super + l
+super + u
     wikt
 
-super + shift + l 
-    wikt `xclip -o`
+super + shift + u
+    wikt "`xclip -o`"
+
+super + o
+    open "`xclip -o`"
 
 super + shift + v
     $TERMINAL -e "sh -c 'sudo rc-service streisand restart'"
@@ -158,7 +164,12 @@ super + F5
     screenshot-dmenu
 
 # Attach to Newsboat tmux session. Launch if there is no session.
-super + shift + f
+super + shift + e
     tmux has-session -t newsboat 2>/dev/null || tmux new -d -s newsboat newsboat; \
     $TERMINAL -e "tmux attach -t newsboat"
+
+# Scratchpad terminal
+super + backslash
+    id=$(cat /tmp/scratchid);\
+    bspc node $id --flag hidden;bspc node -f $id
     

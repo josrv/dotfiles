@@ -1,11 +1,11 @@
 reload-threads 2
 auto-reload yes
 reload-time 30
-keep-articles-days 120
 
 confirm-exit yes
 
 bind-key i open
+bind-key ^[ quit article 
 
 bind-key n next
 bind-key e prev
