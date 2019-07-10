@@ -44,9 +44,11 @@ fi
 setxkbmap -layout us,ru -option 'grp:win_space_toggle' -option 'caps:escape'
 xmodmap -e "clear Lock"
 xset r rate 200 40
-xinput disable "SynPS/2 Synaptics TouchPad"
 
 # Background image
 . ~/.fehbg &
+
+# Scripts
+~/.scripts/dispatch-downloads &
 
 exec bspwm

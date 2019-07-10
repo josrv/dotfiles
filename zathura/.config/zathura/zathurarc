@@ -1,6 +1,6 @@
-map n scroll down
-map e scroll up
-map i scroll right
-map N navigate next
-map E navigate previous
-map t follow
+map о scroll down
+map л scroll up
+map д scroll right
+map р scroll left
+map f follow
+

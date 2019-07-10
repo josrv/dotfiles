@@ -2,23 +2,21 @@ reload-threads 2
 auto-reload yes
 reload-time 30
 
-confirm-exit yes
-
-bind-key i open
+bind-key l open
 bind-key ^[ quit article 
 
-bind-key n next
-bind-key e prev
+bind-key j next
+bind-key k prev
 
-bind-key N next-unread
-bind-key E prev-unread
+bind-key J next-unread
+bind-key K prev-unread
 bind-key H prev-feed
-bind-key I next-feed
+bind-key L next-feed
 
-bind-key n down article
-bind-key e up article
+bind-key j down article
+bind-key k up article
 bind-key h prev article
-bind-key i next article
+bind-key l next article
 
 bind-key h quit articlelist
 

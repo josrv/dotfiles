@@ -1,6 +1,5 @@
 #
-# ~/.bashrc
-#
+# ~/.bashrc 
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
@@ -13,9 +12,19 @@ PS1='\[\e[94m\][\u@\h \W]\$\[\e[m\] '
 alias p="sudo pacman"
 alias s="sudo rc-service"
 alias v="vim"
+alias vim="nvim"
 alias g="git"
 alias psg="ps aux | grep"
 [ -f ~/.git-completion.bash ] && . ~/.git-completion.bash
+
+alias gd="git checkout develop && git pull"
+
+de() {
+    docker exec -it $1 sh
+}
+
+# fzf key-bindings
+. /usr/share/fzf/key-bindings.bash
 
 # Settings
 #set -o vi
@@ -24,14 +33,6 @@ alias psg="ps aux | grep"
 f() {
     fff "$@"
     cd "$(cat "${XDG_CACHE_HOME:=${HOME}/.cache}/fff/.fff_d")"
-}
-
-# fd - cd to selected directory
-fd() {
-  local dir
-  dir=$(find ${1:-.} -path '*/\.*' -prune \
-                  -o -type d -print 2> /dev/null | fzf +m) &&
-  cd "$dir"
 }
 
 # cdf - cd into the directory of the selected file
@@ -66,4 +67,9 @@ ce() {
     local file
     file=$(find -L ~/.dotfiles/ -type f | fzf)
     [[ -n "$file" ]] && $EDITOR "$file" && echo "Edited $file"
+}
+
+# si  — search package and install
+si() {
+    pacman -Slq | fzf -m --preview 'pacman -Si {1}' | xargs -r sudo pacman -S --noconfirm
 }

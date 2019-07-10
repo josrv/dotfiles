@@ -38,14 +38,16 @@ border-color = #00000000
 module-margin-left = 2
 module-margin-right = 2
 
-font-0 = "Andika:style=Regular:size=9;2"
+font-0 = "PT Root UI:style=Regular:size=10;2"
 font-1 = "FontAwesome:size=9;1"
 
 wm-restack = bspwm
 
 modules-left = bspwm 
 modules-center = 
-modules-right = mpd wireless-network alsa battery date
+modules-right = mpd layout wireless-network alsa date
+
+;tray-position = right
 
 [module/bspwm]
 type = internal/bspwm
@@ -71,17 +73,6 @@ label-focused-background = #3f3f3f
 
 label-urgent-background = ${colors.red}
 
-[module/battery]
-type = internal/battery
-full-at = 100
-battery = BAT0
-adapter = AC
-poll-interval = 5
-label-discharging = 🔋%percentage%
-label-charging = ⚡%percentage%%
-format-full-foreground = ${colors.green}
-label-full = ⚡
-
 [module/date]
 type = internal/date
 interval = 60
@@ -91,7 +82,7 @@ time = %H:%M
 
 [module/wireless-network]
 type = internal/network
-interface = wlp2s0
+interface = wlp7s0
 interval = 5
 label-connected = " %essid% "
 label-connected-foreground = ${colors.white}
@@ -109,7 +100,7 @@ type = internal/alsa
 master-soundcard = default
 master-mixer = Master
 format-volume = <label-volume>
-label-volume = %percentage% 
+label-volume = %percentage%
 
 [module/mpd]
 type = internal/mpd
