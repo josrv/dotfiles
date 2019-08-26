@@ -73,3 +73,9 @@ ce() {
 si() {
     pacman -Slq | fzf -m --preview 'pacman -Si {1}' | xargs -r sudo pacman -S --noconfirm
 }
+
+# si  — uninstall a package
+ui() {
+    pacman -Qq | fzf -m --preview 'pacman -Qi {1}' | xargs -r sudo pacman -R --noconfirm
+}
+

@@ -167,7 +167,7 @@ super + r
     rocketchat-desktop
 
 super + b
-    BOOK=$(cd $HOME/Books && find . -type f | sed -e "s/^\.\///g" | dmenu -l 10); \
+    BOOK=$(cd $HOME/Books && find . -type f | sed -e "s/^\.\///g" | dmenu -i -l 10); \
     [[ -z "$BOOK" ]] || zathura "$HOME/Books/$BOOK"
 
 
