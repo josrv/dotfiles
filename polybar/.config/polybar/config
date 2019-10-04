@@ -107,8 +107,8 @@ label-volume = "Vol: %percentage%%"
 
 [module/mpd]
 type = internal/mpd
-host = 127.0.0.1
+;host = 127.0.0.1
 port = 6600
 interval = 2
 format-online = <label-song>
-format-playing = ${self.format-online}
+;format-playing = ${self.format-online}

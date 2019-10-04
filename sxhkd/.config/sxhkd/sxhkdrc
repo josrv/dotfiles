@@ -11,7 +11,8 @@ super + Escape
 	pkill -USR1 -x sxhkd
 
 # suspend
-super + Pause
+# super + Pause
+super + ctrl + q
     sudo pm-suspend
 
 #
@@ -23,8 +24,10 @@ super + shift + w
     kill -9 $(pidof bspwm)
     
 # quit/restart bspwm
-super + ctrl + {q,r}
-	bspc {quit,wm -r}
+#super + ctrl + {q,r}
+# bspc {quit,wm -r}
+super + ctrl + r
+	bspc wm -r
 
 # close and kill
 super + {_,shift + }q
@@ -163,8 +166,8 @@ super + shift + u
 super + o
     open "`xclip -o`"
 
-super + r
-    rocketchat-desktop
+# super + r
+#     rocketchat-desktop
 
 super + b
     BOOK=$(cd $HOME/Books && find . -type f | sed -e "s/^\.\///g" | dmenu -i -l 10); \
