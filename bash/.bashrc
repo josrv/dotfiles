@@ -65,7 +65,7 @@ fe() {
 # ce — edit dotfiles
 ce() {
     local file
-    file=$(find -L ~/.dotfiles/ -type f | fzf)
+    file=$(find -L ~/.config/ -type f | fzf)
     [[ -n "$file" ]] && $EDITOR "$file" && echo "Edited $file"
 }
 

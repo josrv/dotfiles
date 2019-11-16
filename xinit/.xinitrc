@@ -49,6 +49,6 @@ xset r rate 200 40
 . ~/.fehbg &
 
 # Scripts
-~/.scripts/dispatch-downloads &
+#~/.scripts/dispatch-downloads &
 
 exec bspwm
