@@ -1,0 +1,226 @@
+* Configuration
+** Base
+  #+BEGIN_SRC emacs-lisp
+    
+    (require 'cl) ; lisp extensions
+    
+    (setq custom-file "~/.emacs-custom.el") ; easy customization buffer will be saved here
+  #+END_SRC
+** Packages
+*** straight.el
+  #+begin_src emacs-lisp
+
+  (defvar bootstrap-version)
+  (let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+
+  (setq straight-use-package-by-default t)
+  (straight-use-package 'use-package)
+  #+end_src
+*** Packages 
+  #+begin_src emacs-lisp
+  
+    ; evil-mode
+    (straight-use-package 'evil)
+    (straight-use-package 'evil-org)
+    (straight-use-package 'evil-leader)
+
+    (global-evil-leader-mode) 
+    (require 'evil)
+    (evil-mode 1)
+    
+    ; easy-templates
+    (unless (version< org-version "9.2")
+        (require 'org-tempo)) 
+    (require 'use-package)
+    
+    ; projectile
+    (straight-use-package 'projectile)
+    (projectile-mode +1)
+    (setq projectile-project-search-path '("~/"))
+    (setq projectile-indexing-method 'native)
+
+    ; helm
+    (straight-use-package 'helm)
+    (straight-use-package 'helm-org)
+    (straight-use-package 'helm-projectile)
+    (require 'helm-config)
+    (helm-mode 1)
+
+    ; Enable Helm global fuzzy matching
+    (setq helm-mode-fuzzy-match t)
+    (setq helm-completion-in-region-fuzzy-match t)
+
+     #+end_src
+*** Magit  
+#+BEGIN_SRC emacs-lisp
+  (straight-use-package 'magit)
+#+END_SRC
+** Look & feel   
+*** Gui customization
+    #+begin_src emacs-lisp
+  (straight-use-package 'solarized-theme)
+  (load-theme 'solarized-light t)
+  (set-frame-font "Fira Mono 15")
+
+  (customize-set-variable 'inhibit-startup-screen t) ; no splash screen on start
+  (tool-bar-mode -1)   ; no tool bar with icons
+  (scroll-bar-mode -1) ; no scroll bars
+    #+end_src
+
+**** Helm customization
+    #+BEGIN_SRC emacs-lisp
+      (custom-set-faces
+        '(helm-candidate-number ((t (:background "goldenrod1" :foreground "black"))))
+        '(helm-header-line-left-margin ((t (:background "goldenrod1" :foreground "black"))))
+        '(helm-match ((t (:foreground "goldenrod1"))))
+        '(helm-prefarg ((t (:foreground "DarkSeaGreen3"))))
+        '(helm-selection ((t (:background "DarkSeaGreen3" :foreground "black"))))
+        '(helm-separator ((t (:foreground "tomato1"))))
+        '(helm-source-header ((t (:background "SkyBlue4" :foreground "white" :weight bold :height 1.1 :family "Fira Sans"))))
+        '(helm-visible-mark ((t (:background "OliveDrab1" :foreground "black")))))
+    #+END_SRC
+
+*** Editor
+#+begin_src emacs-lisp
+  (line-number-mode 1) ; column number in mode line
+  (column-number-mode 1) ; line number in mode line
+ 
+  (global-display-line-numbers-mode 1) ; line number in margin
+
+  (customize-set-variable 'x-select-enable-clipboard t) ; Use the clipboard
+ 
+  (customize-set-variable 'indent-tabs-mode nil)
+  (customize-set-variable 'standard-indent 2)
+  (customize-set-variable 'tab-width 2)
+  (customize-set-variable 'tab-stop-list '(2 4 6))
+#+end_src
+     
+*** Languages
+#+BEGIN_SRC emacs-lisp
+  (use-package nix-mode
+    :mode "\\.nix\\'")
+#+END_SRC
+**** Highlighting
+     #+begin_src emacs-lisp
+     (use-package highlight-parentheses
+       :config
+       (add-hook 'prog-mode-hook #'highlight-parentheses-mode))
+     (use-package rainbow-delimiters
+       :config
+       (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+     #+end_src
+     
+*** Fonts and colors
+#+BEGIN_SRC emacs-lisp
+  (setq org-hide-emphasis-markers t) ; hide *...* and /.../
+  (custom-theme-set-faces
+    'user
+    '(variable-pitch ((t (:family "Charis SIL"))))
+    '(fixed-pitch ((t ( :family "Fira Mono")))))
+  (setq-default line-spacing 0)
+
+  (straight-use-package 'org-bullets)
+  (require 'org-bullets)
+  (add-hook 'org-mode-hook 'org-bullets-mode)
+#+END_SRC
+*** Org mode customization
+Use variable pitch (serif font) in Org excluding code blocks and other special blocks
+#+BEGIN_SRC emacs-lisp
+(add-hook 'org-mode-hook
+           '(lambda ()
+               (variable-pitch-mode 1)
+               (mapc
+                (lambda (face) ;; Rescale and inherit the properties from the fixed-pitch font.
+                  (set-face-attribute face nil :inherit 'fixed-pitch))
+                (list 'org-code 'org-block 'org-table 'org-property-value 'org-formula
+                      'org-tag 'org-verbatim 'org-date 'company-tooltip
+                      'org-special-keyword 'org-block-begin-line
+                      'org-block-end-line 'org-meta-line
+                      'org-document-info-keyword))))
+
+#+END_SRC
+** Modes
+*** Ebooks
+#+BEGIN_SRC emacs-lisp
+  (straight-use-package 'nov)
+  (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
+  (setq nov-text-width 80)
+
+  (evil-set-initial-state 'nov-mode 'emacs) ; disable evil-mode
+#+END_SRC
+**** TODO justify text
+
+** Keys
+*** Leader key
+  #+BEGIN_SRC emacs-lisp
+    (evil-leader/set-leader "f")
+  #+END_SRC
+*** Mappings
+  <> means the leader key
+  
+  | key  | Command                     | Description                                                          |
+  | <> d | helm-find-files             | Open a file in a new buffer (not recursive)                          |
+  | <> j | helm-projectile             | Open Projectile prompt (recursive file search in ~/.projectile dirs) |
+  | <> b | helm-mini                   | Open Helm mini-buffer (buffers and recent files                      |
+  | <> h | helm-org-in-buffer-headings | Jump to an Org heading in the current buffer                         |
+  | <> r | helm-M-x                    | Run a command                                                        |
+  | <> t | org-time-stamp              | Open the timestamp prompt                                            |
+
+  #+BEGIN_SRC emacs-lisp
+   (evil-leader/set-key 
+     "d" 'helm-find-files
+     "j" 'helm-projectile
+     "b" 'helm-mini
+     "h" 'helm-org-in-buffer-headings
+     "r" 'helm-M-x
+     "t" 'org-time-stamp)
+  #+END_SRC
+
+** Misc
+*** Remember last layout in Insert/Replace mode
+
+#+BEGIN_SRC emacs-lisp
+
+(if (eq system-type 'gnu/linux)
+; saved-layout is a layout that was used in Insert/Replace state.
+(setq saved-layout (shell-command-to-string "xkblayout-state print %c"))
+
+(setq restore-layout (lambda ()
+            (shell-command (concat "xkblayout-state set " saved-layout))))
+
+; save editing layout and set to English so that Normal mode function correctly
+(setq save-layout-and-reset (lambda ()
+            (setq saved-layout (shell-command-to-string "xkblayout-state print %c"))
+            (shell-command "xkblayout-state set 0")
+            ))
+
+; Restore last layout
+(add-hook 'evil-insert-state-entry-hook restore-layout)
+(add-hook 'evil-replace-state-entry-hook restore-layout)
+
+; save last layout, set eng
+(add-hook 'evil-insert-state-exit-hook save-layout-and-reset)
+(add-hook 'evil-replace-state-exit-hook save-layout-and-reset)
+)
+#+END_SRC
+
+*** Automatically open write-protected files as root
+
+#+BEGIN_SRC emacs-lisp
+(defun open-as-root ()
+  (unless (and buffer-file-name
+               (file-writable-p buffer-file-name))
+    (find-alternate-file (concat "/sudo:root@localhost:" buffer-file-name))))
+
+(add-hook 'find-file-hook 'open-as-root)
+#+END_SRC
