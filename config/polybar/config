@@ -1,0 +1,102 @@
+[color]
+background = #2e3440
+foreground = #eceff4
+
+primary = #5e81ac
+secondary = #4c566a
+alert = #bd2c40
+
+white = #ffffff
+green = #a3be8c
+red = #bf616a
+
+[bar/bar0]
+monitor = ${env:MONITOR:}
+
+width = 100%
+height = 24 
+;offset-x = 1%
+;offset-y = 1%
+fixed-center = false
+
+background = ${color.background}
+foreground = ${color.foreground}
+
+line-size = 3
+line-color = #f00
+
+border-size = 0
+border-color = #00000000
+
+padding-left = 2
+padding-right = 2
+;padding-left = 2
+;padding-right = 2
+module-margin-right = 2
+module-margin-left = 1
+
+font-0 = "DejaVu Sans,DejaVu Sans Condensed:style=Condensed,Book:size=11;3"
+font-1 = "Font Awesome 5 Free,Font Awesome 5 Free Regular:style=Regular:size=12;1"
+
+wm-restack = i3
+
+modules-left = i3 
+modules-center = 
+modules-right = wireless-network alsa layout date
+
+[module/battery]
+type = internal/battery
+full-at = 100
+battery = BAT0
+adapter = AC
+poll-interval = 5
+label-discharging = 🔋%percentage%
+label-charging = ⚡%percentage%%
+format-full-foreground = ${color.green}
+label-full = ⚡
+
+[module/i3]
+type = internal/i3
+
+label-focused = %index%
+label-focused-background = ${color.primary}
+label-focused-padding = 1
+label-unfocused = %index%
+label-unfocused-background = ${color.secondary}
+label-unfocused-padding = 1
+
+[module/date]
+type = internal/date
+interval = 60
+label = %date% %time%
+date = %a, %d %b
+time = %H:%M
+
+[module/wireless-network]
+type = internal/network
+interface = wlp7s0
+interval = 5
+label-connected = "%ifname%"
+label-connected-foreground = ${color.green}
+label-disconnected = "%ifname%"
+label-disconnected-foreground = ${color.red}
+
+[module/layout]
+type = internal/xkeyboard
+format = <label-layout>
+label-layout = %layout%
+
+[module/alsa]
+type = internal/alsa
+master-soundcard = default
+master-mixer = Master
+format-volume = <label-volume>
+label-volume = %percentage%%
+
+[module/mpd]
+type = internal/mpd
+host = 127.0.0.1
+port = 6600
+interval = 2
+format-online = <label-song>
+format-playing = ${self.format-online}
