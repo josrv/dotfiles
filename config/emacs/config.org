@@ -214,7 +214,6 @@ Use variable pitch (serif font) in Org excluding code blocks and other special b
   
 ** Misc
 *** Remember last layout in Insert/Replace mode
-
 #+BEGIN_SRC emacs-lisp
 
 (if (eq system-type 'gnu/linux)
@@ -241,7 +240,6 @@ Use variable pitch (serif font) in Org excluding code blocks and other special b
 #+END_SRC
 
 *** Automatically open write-protected files as root
-
 #+BEGIN_SRC emacs-lisp
 (defun open-as-root ()
   (unless (and buffer-file-name
@@ -251,3 +249,7 @@ Use variable pitch (serif font) in Org excluding code blocks and other special b
 (add-hook 'find-file-hook 'open-as-root)
 #+END_SRC
 
+*** Follow Git-controlled links
+#+BEGIN_SRC emacs-lisp
+  (setq vc-follow-symlinks t)
+#+END_SRC
