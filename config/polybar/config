@@ -5,6 +5,7 @@ foreground = #eceff4
 primary = #5e81ac
 secondary = #4c566a
 alert = #bd2c40
+dark = #81a1c1
 
 white = #ffffff
 green = #a3be8c
@@ -38,11 +39,11 @@ module-margin-left = 1
 font-0 = "DejaVu Sans,DejaVu Sans Condensed:style=Condensed,Book:size=11;3"
 font-1 = "Font Awesome 5 Free,Font Awesome 5 Free Regular:style=Regular:size=12;1"
 
-wm-restack = i3
+wm-restack = bspwm 
 
-modules-left = i3 
+modules-left = workspaces
 modules-center = 
-modules-right = wireless-network alsa layout date
+modules-right = volume layout date
 
 [module/battery]
 type = internal/battery
@@ -54,6 +55,19 @@ label-discharging = 🔋%percentage%
 label-charging = ⚡%percentage%%
 format-full-foreground = ${color.green}
 label-full = ⚡
+
+[module/workspaces]
+type = internal/bspwm
+
+label-focused = %index%
+label-focused-background = ${color.primary}
+label-focused-padding = 2
+label-empty = %index%
+label-empty-padding = 2
+label-empty-foreground = ${color.dark}
+label-occupied = %index%
+label-occupied-background = ${color.secondary}
+label-occupied-padding = 2
 
 [module/i3]
 type = internal/i3
@@ -86,12 +100,13 @@ type = internal/xkeyboard
 format = <label-layout>
 label-layout = %layout%
 
-[module/alsa]
+[module/volume]
 type = internal/alsa
 master-soundcard = default
 master-mixer = Master
 format-volume = <label-volume>
 label-volume = %percentage%%
+label-muted-foreground = ${color.dark}
 
 [module/mpd]
 type = internal/mpd

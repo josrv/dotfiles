@@ -64,3 +64,19 @@ alias ls='ls -hlNa --color=auto'
 alias v='vim'
 alias vi='vim'
 alias vim='nvim'
+
+# Custom functions
+
+# si  — search package and install
+si() {
+    pacman -Slq | fzf -m --preview 'pacman -Si {1}' | xargs -r sudo pacman -S --noconfirm
+}
+zle -N si{,}
+
+# si  — uninstall a package
+ui() {
+    pacman -Qq | fzf -m --preview 'pacman -Qi {1}' | xargs -r sudo pacman -R --noconfirm
+}
+
+# Bindings
+bindkey "^P" si # Install a package
