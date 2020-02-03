@@ -1,23 +1,68 @@
-# terminal emulator
-super + Return
-	alacritty
-
-# program launcher
-super + d
-	dmenu_run
-
-# make sxhkd reload its configuration files:
-super + Escape
-	pkill -USR1 -x sxhkd
-
 #
-# bspwm hotkeys
+# SESSION MANAGEMENT
 #
 
 # kill X session
 super + shift + w
     kill -9 $(pidof bspwm)
-    
+
+# Lock screen
+super + ctrl + q
+    systemctl start lock@$USER.service
+
+# Suspend
+super + ctrl + Escape
+    systemctl suspend
+
+#
+# SYSTEM MANAGEMENT
+#
+
+# make sxhkd reload its configuration files:
+super + Escape
+	pkill -USR1 -x sxhkd
+
+# audio controls
+XF86AudioRaiseVolume
+    amixer -c 0 -q set Master 2dB+ unmute
+
+XF86AudioLowerVolume
+    amixer -c 0 -q set Master 2dB- unmute
+
+XF86AudioMute
+    amixer -c 0 -q set Master toggle
+
+#
+# APPLICATIONS
+#
+
+# program launcher
+super + d
+	rofi -show combi -combi-modi window,drun -modi combi
+
+# terminal emulator
+super + Return
+	alacritty
+
+super + y
+    firefox
+
+super + F5
+    screenshot-dmenu
+
+super + u
+    wikt
+
+super + shift + u
+    wikt "`xclip -o`"
+
+super + o
+    open "`xclip -o`"
+
+#
+# WINDOW MANAGEMENT
+#
+
 # quit/restart bspwm
 super + ctrl + {q,r}
 	bspc {quit,wm -r}
@@ -119,33 +164,4 @@ super + alt + shift + {h,j,k,l}
 # move a floating window
 super + {Left,Down,Up,Right}
 	bspc node -v {-20 0,0 20,0 -20,20 0}
-
-# controls
-XF86AudioRaiseVolume
-    amixer -c 0 -q set Master 2dB+ unmute
-
-XF86AudioLowerVolume
-    amixer -c 0 -q set Master 2dB- unmute
-
-XF86AudioMute
-    amixer -c 0 -q set Master toggle
-
-super + y
-    firefox
-
-# Launch Peerflix with a magnet link from clipboard
-# super + shift + p
-#     $TERMINAL -e peerflix "$(xclip -o -selection clipboard)" --mpv
-
-super + u
-    wikt
-
-super + shift + u
-    wikt "`xclip -o`"
-
-super + o
-    open "`xclip -o`"
-
-super + F5
-    screenshot-dmenu
 

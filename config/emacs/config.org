@@ -7,6 +7,11 @@
     (setq custom-file "~/.emacs-custom.el") ; easy customization buffer will be saved here
 
   #+END_SRC
+Save backups to one directory
+#+BEGIN_SRC emacs-lisp
+(setq backup-directory-alist
+          `(("." . ,(concat user-emacs-directory "backups"))))
+#+END_SRC
 ** Packages
 *** straight.el
   #+begin_src emacs-lisp

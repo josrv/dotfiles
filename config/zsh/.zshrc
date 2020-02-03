@@ -79,4 +79,4 @@ ui() {
 }
 
 # Bindings
-bindkey "^P" si # Install a package
+bindkey "^P" si # Install packages

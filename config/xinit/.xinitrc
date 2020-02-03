@@ -1,3 +1,5 @@
+[[ -f ~/.Xresources ]] && xrdb -merge -I$HOME ~/.Xresources
+
 setxkbmap -layout us,ru -option 'grp:win_space_toggle' -option 'caps:escape' -option 'compose:menu'
 
 xmodmap -e "clear Lock"

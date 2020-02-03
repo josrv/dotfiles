@@ -1,3 +1,12 @@
+set ifs "\n"
 set hidden on
 set drawbox on
+
+cmd open ${{
+    case $(file --mime-type "$f" -b) in
+        text/*) nvim $fx;;
+        video/*) setsid mpv $f > /dev/null 2>&1 & ;; 
+        *) for f in $fx; do setsid xdg-open $f >/dev/null 2>/dev/null & done;;
+    esac
+}}
 
