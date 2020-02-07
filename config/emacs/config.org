@@ -55,13 +55,6 @@ Save backups to one directory
     (setq projectile-project-search-path '("~/"))
     (setq projectile-indexing-method 'native)
 
-    ; helm
-    (straight-use-package 'helm)
-    (straight-use-package 'helm-org)
-    (straight-use-package 'helm-projectile)
-    (require 'helm-config)
-    ;(helm-mode 1)
- 
     ; ivy/counsel/swiper
     (straight-use-package 'counsel)
     (straight-use-package 'counsel-projectile)
@@ -173,6 +166,12 @@ Use variable pitch (serif font) in Org excluding code blocks and other special b
 
 #+END_SRC
 ** Modes
+*** Org
+Org jump to a heading
+#+BEGIN_SRC emacs-lisp
+  (setq org-goto-interface 'outline-path-completion)
+  (setq org-outline-path-complete-in-steps nil)
+#+END_SRC
 *** Ebooks
 #+BEGIN_SRC emacs-lisp
   (straight-use-package 'nov)
@@ -195,28 +194,24 @@ Use variable pitch (serif font) in Org excluding code blocks and other special b
     (evil-leader/set-leader "f")
   #+END_SRC
 *** Mappings
-  | key  | Command                     | Description                                                          |
-  | <> d | helm-find-files             | Open a file in a new buffer (not recursive)                          |
-  | <> j | helm-projectile             | Open Projectile prompt (recursive file search in ~/.projectile dirs) |
-  | <> b | helm-mini                   | Open Helm mini-buffer (buffers and recent files                      |
-  | <> h | helm-org-in-buffer-headings | Jump to an Org heading in the current buffer                         |
-  | <> r | helm-M-x                    | Run a command                                                        |
-  | <> t | org-time-stamp              | Open the timestamp prompt                                            |
-
-  #+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
    (evil-leader/set-key 
      "d" 'find-file
      "D" 'open-ranger
      "j" 'counsel-projectile
      "b" 'ivy-switch-buffer
-     "h" 'helm-org-in-buffer-headings
+     "g" 'org-goto
      "r" 'counsel-M-x
      "e" 'eval-expression
-     "t" 'org-time-stamp
+     "hu" 'outline-up-heading
+     "hp" 'outline-previous-heading
+     "hf" 'org-forward-heading-same-level
+     "hb" 'org-backward-heading-same-level
+     "n" 'org-time-stamp
+     "t" 'org-todo
+     "T" (lambda () (interactive) (org-insert-todo-heading nil))
      "c" 'insert-char)
-   
   #+END_SRC
-  
 ** Misc
 *** Remember last layout in Insert/Replace mode
 #+BEGIN_SRC emacs-lisp
