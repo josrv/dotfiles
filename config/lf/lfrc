@@ -2,6 +2,8 @@ set ifs "\n"
 set hidden on
 set drawbox on
 
+# Custom commands
+
 cmd open ${{
     case $(file --mime-type "$f" -b) in
         text/*) nvim $fx;;
@@ -10,3 +12,5 @@ cmd open ${{
     esac
 }}
 
+# Mappings
+map d delete

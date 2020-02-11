@@ -3,7 +3,9 @@ typeset -U path cdpath fpath manpath
 
 export DEFAULT_USER="ivan"
 export EDITOR="nvim"
-export PROMPT="|%F{153}%n@%m%f|%F{174}%1~%f> "
+
+export PROMPT="|%F{33}%n@%m%f|%F{160}%1~%f> "
+
 export ZSH_AUTOSUGGEST_MANUAL_REBIND="true"
 export ZSH_AUTOSUGGEST_USE_ASYNC="true"
 
@@ -60,10 +62,19 @@ bindkey "^?" backward-delete-char
 
 # Aliases
 alias ..='cd ..'
-alias ls='ls -hlNa --color=auto'
 alias v='vim'
 alias vi='vim'
 alias vim='nvim'
+
+## OS-specific aliases
+case `uname` in
+  Darwin)
+    alias ls='ls -hlGa'
+  ;;
+  Linux)
+    alias ls='ls -hlNa --color=auto'
+  ;;
+esac
 
 # Custom functions
 
