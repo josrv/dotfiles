@@ -12,7 +12,7 @@ super + ctrl + q
 
 # Suspend
 super + ctrl + Escape
-    systemctl suspend
+    sudo zzz
 
 #
 # SYSTEM MANAGEMENT
@@ -38,11 +38,11 @@ XF86AudioMute
 
 # program launcher
 super + d
-	rofi -show combi -combi-modi window,drun -modi combi
+    rofi -show combi -combi-modi window,drun -modi combi,run
 
 # terminal emulator
 super + Return
-	alacritty
+    alacritty
 
 super + y
     firefox

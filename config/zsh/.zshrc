@@ -78,9 +78,10 @@ esac
 
 # Custom functions
 
-# si  — search package and install
 si() {
-    pacman -Slq | fzf -m --preview 'pacman -Si {1}' | xargs -r sudo pacman -S --noconfirm
+  local packagename='{ sub(/-[^\-]*$/, "", $2); print $2 }'
+  echo
+  xbps-query -Rs '' | sort | fzf -m | awk "$packagename" | xargs -r sudo xbps-install -Sy
 }
 zle -N si{,}
 
@@ -88,6 +89,17 @@ zle -N si{,}
 ui() {
     pacman -Qq | fzf -m --preview 'pacman -Qi {1}' | xargs -r sudo pacman -R --noconfirm
 }
+
+# si  — search package and install
+#si() {
+#    pacman -Slq | fzf -m --preview 'pacman -Si {1}' | xargs -r sudo pacman -S --noconfirm
+#}
+#zle -N si{,}
+
+# si  — uninstall a package
+#ui() {
+#    pacman -Qq | fzf -m --preview 'pacman -Qi {1}' | xargs -r sudo pacman -R --noconfirm
+#}
 
 # Bindings
 bindkey "^P" si # Install packages

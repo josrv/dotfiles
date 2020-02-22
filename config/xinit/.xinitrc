@@ -6,6 +6,8 @@ xmodmap -e "clear Lock"
 xset r rate 200 40
 
 sxhkd &
-$HOME/.config/polybar/launch.sh &
+$HOME/.fehbg
+
+tint2 &
 
 exec bspwm
