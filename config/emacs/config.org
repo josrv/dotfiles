@@ -89,6 +89,7 @@ Save backups to one directory
   (set-frame-font "Fira Mono 15")
 
   (customize-set-variable 'inhibit-startup-screen t) ; no splash screen on start
+  (menu-bar-mode -1)   ; no menu bar
   (tool-bar-mode -1)   ; no tool bar with icons
   (scroll-bar-mode -1) ; no scroll bars
     #+end_src

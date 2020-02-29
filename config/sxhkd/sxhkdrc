@@ -20,7 +20,7 @@ super + ctrl + Escape
 
 # make sxhkd reload its configuration files:
 super + Escape
-	pkill -USR1 -x sxhkd
+    pkill -USR1 -x sxhkd
 
 # audio controls
 XF86AudioRaiseVolume
@@ -42,13 +42,13 @@ super + d
 
 # terminal emulator
 super + Return
-    alacritty
+    st
 
 super + y
     firefox
 
 super + F5
-    screenshot-dmenu
+    scrot -s -e 'mv $f ~/Pictures/Screenshots'
 
 super + u
     wikt
