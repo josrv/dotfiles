@@ -55,6 +55,24 @@ Xft.antialias: true
 *color20:      base04
 *color21:      base06
 
+! --- ST --- !
+
 st.font: JetBrains Mono:size=14:style=Regular:antialias=true:autohint=true
-!TODO
-rofi.font: JetBrains Mono 14
+
+! -- ROFI -- !
+
+rofi.font:		JetBrains Mono 14
+rofi.bw:		2
+
+rofi.color-enabled: 	true
+
+! Property Name     	BG      Border  Separator
+rofi.color-window:  	base00, base01, base01
+! Property Name     	BG      FG      BG-alt  BG-sel  FG-sel
+rofi.color-normal:  	base00, base05, base00, base0A, base00
+rofi.color-active:  	base00, base0D, base00, base0A, base00
+rofi.color-urgent:  	base00, base08, base00, base0A, base00
+
+rofi.separator-style: 	solid
+rofi.sidebar-mode: 	true
+rofi.hide-scrollbar:	true

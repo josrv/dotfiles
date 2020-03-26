@@ -156,6 +156,7 @@ Use variable pitch (serif font) in Org excluding code blocks and other special b
 (add-hook 'org-mode-hook
            '(lambda ()
                (variable-pitch-mode 1)
+	       (setq truncate-lines nil)
                (mapc
                 (lambda (face) ;; Rescale and inherit the properties from the fixed-pitch font.
                   (set-face-attribute face nil :inherit 'fixed-pitch))

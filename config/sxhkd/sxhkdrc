@@ -38,17 +38,22 @@ XF86AudioMute
 
 # program launcher
 super + d
-    rofi -show combi -combi-modi window,drun -modi combi,run
+    $HOME/.scripts/run-with-layout 'rofi -show combi -combi-modi window,drun -modi combi,run'
 
 # terminal emulator
 super + Return
     st
 
+# browser
 super + y
     firefox
 
+# browser with a specific profile
+super + Y
+    sed -n -e 's/Name=//p' $HOME/.mozilla/firefox/profiles.ini | rofi -dmenu -p "Choose profile" | xargs -r firefox -P
+
 super + F5
-    scrot -s -e 'mv $f ~/Pictures/Screenshots'
+    sleep 0.1 && scrot -sb -e 'mv $f ~/Pictures/Screenshots'
 
 super + u
     wikt
