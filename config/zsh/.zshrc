@@ -100,6 +100,13 @@ ui() {
 }
 zle -N ui{,}
 
+# kill process
+kp() {
+  ps aux | fzf | awk '{print $2}' | xargs -r kill -9
+}
+zle -N kp{,}
+
 # Bindings
 bindkey "^P" si # Install packages
 bindkey "^U" ui # Uninstall packages
+bindkey "^K" kp # Kill process

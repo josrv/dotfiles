@@ -6,13 +6,12 @@ if !has('gui_running')
 endif
 
 let mapleader = "<alt>"
-set tabstop=4
-set shiftwidth=4
+set tabstop=2
+set shiftwidth=2
 set hidden
 set expandtab
 set laststatus=2
-set showtabline=0
-set undodir=~/.vimundo
+set undodir=~/.local/share/vimundo
 
 set undofile
 
@@ -27,19 +26,10 @@ set noshowmode
 " Plugin configs
 let g:lightline = {
       \ 'active': {
-      \   'left': [ ['mode', 'buffers'] ]
-      \ },
-      \ 'component_expand': {
-      \   'buffers': 'lightline#bufferline#buffers',
-      \ },
-      \ 'component_type': {
-      \   'buffers': 'tabsel',
+      \   'left': [ ['mode'] ]
       \ },
       \ 'colorscheme': 'wombat',
       \ }
-
-let g:lightline#bufferline#show_number  = 1
-let g:lightline#bufferline#unnamed      = '[Unnamed]'
 
 " Custom bindings
 map ; A;<Esc>

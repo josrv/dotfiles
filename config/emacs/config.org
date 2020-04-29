@@ -167,6 +167,13 @@ Use variable pitch (serif font) in Org excluding code blocks and other special b
                       'org-document-info-keyword))))
 
 #+END_SRC
+
+org-download
+#+BEGIN_SRC emacs-lisp
+(straight-use-package 'org-download)
+(require 'org-download)
+
+#+END_SRC
 ** Modes
 *** Org
 Org jump to a heading
@@ -218,7 +225,7 @@ Org jump to a heading
 *** Remember last layout in Insert/Replace mode
 #+BEGIN_SRC emacs-lisp
 
-(if (eq system-type 'gnu/linux)
+(when (eq system-type 'gnu/linux)
 ; saved-layout is a layout that was used in Insert/Replace state.
 (setq saved-layout (shell-command-to-string "xkblayout-state print %c"))
 

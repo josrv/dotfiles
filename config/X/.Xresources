@@ -20,6 +20,8 @@ Xft.antialias: true
 #define base0E #c678dd
 #define base0F #be5046
 
+#define terminalFont JetBrains Mono:size=14:style=Regular:antialias=true:autohint=true
+
 *foreground:   base05
 #ifdef background_opacity
 *background:   [background_opacity]base00
@@ -55,11 +57,18 @@ Xft.antialias: true
 *color20:      base04
 *color21:      base06
 
+
+
 ! --- ST --- !
 
-st.font: JetBrains Mono:size=14:style=Regular:antialias=true:autohint=true
+st.font: terminalFont
 
-! -- ROFI -- !
+! --- Xterm --- !
+XTerm.termName: 	xterm-256color
+XTerm.vt100.faceName: 	terminalFont
+XTerm*selectToClipboard: true
+
+! --- ROFI --- !
 
 rofi.font:		JetBrains Mono 14
 rofi.bw:		2

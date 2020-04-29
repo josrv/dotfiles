@@ -42,27 +42,35 @@ super + d
 
 # terminal emulator
 super + Return
-    st
+    xterm
 
 # browser
 super + y
-    firefox
+    apulse firefox
 
 # browser with a specific profile
 super + Y
-    sed -n -e 's/Name=//p' $HOME/.mozilla/firefox/profiles.ini | rofi -dmenu -p "Choose profile" | xargs -r firefox -P
+    sed -n -e 's/Name=//p' $HOME/.mozilla/firefox/profiles.ini | rofi -dmenu -p "Choose profile" | xargs -r apulse firefox -P
 
+# open file manager
+super + u
+    xterm lf
+
+# open file manager, navigate to bookmark
+super + U
+    cat $HOME/.bookmarks | envsubst | rofi -dmenu -i -p "Open directory" | xargs -r xterm lf
+
+# screenshot (clipboard)
 super + F5
+    sleep 0.1 && scrot -sb -e /tmp/screenshot.png 'xclip -selection clipboard -t image/png $f; rm $f'
+
+# screenshot (file)
+super + shift + F5
     sleep 0.1 && scrot -sb -e 'mv $f ~/Pictures/Screenshots'
 
-super + u
-    wikt
-
-super + shift + u
-    wikt "`xclip -o`"
-
-super + o
-    open "`xclip -o`"
+# Emacs
+super + e
+    emacs
 
 #
 # WINDOW MANAGEMENT
@@ -87,7 +95,6 @@ super + m
 # swap the current node and the biggest node
 super + g
 	bspc node -s biggest
-
 #
 # state/flags
 #
@@ -170,3 +177,6 @@ super + alt + shift + {h,j,k,l}
 super + {Left,Down,Up,Right}
 	bspc node -v {-20 0,0 20,0 -20,20 0}
 
+super + shift + r
+    bspc node -f @parent; \
+    bspc node -R 90

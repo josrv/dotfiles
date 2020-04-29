@@ -1,6 +1,7 @@
 set ifs "\n"
 set hidden on
 set drawbox on
+set previewer ~/.config/lf/scope
 
 # Custom commands
 

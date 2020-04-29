@@ -1,7 +1,6 @@
 // New tab
 user_pref("browser.newtabpage.activity-stream.feeds.telemetry", false);
-user_pref("browser.newtabpage.activity-stream.telemetry", false);
-user_pref("browser.newtabpage.activity-stream.feeds.snippets", false);
+user_pref("browser.newtabpage.activity-stream.telemetry", false); user_pref("browser.newtabpage.activity-stream.feeds.snippets", false);
 user_pref("browser.newtabpage.activity-stream.feeds.topsites", false);
 user_pref("browser.newtabpage.activity-stream.feeds.highlights", false);
 user_pref("browser.newtabpage.activity-stream.feeds.section.highlights", false);
@@ -52,3 +51,6 @@ user_pref("general.smoothScroll", false);
 user_pref("general.smoothScroll.pages", false);
 user_pref("image.mem.min_discard_timeout_ms", 2100000000);
 user_pref("image.mem.max_decoded_image_kb", "512K");
+
+// Enable userChrome.css
+user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
