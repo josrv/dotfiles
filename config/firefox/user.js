@@ -42,7 +42,7 @@ user_pref("dom.webnotifications.enabled", false);
 user_pref("dom.webnotifications.serviceworker.enabled", false);
 user_pref("dom.push.enabled", false);
 user_pref("dom.pushconnection.enabled", false);
-user_pref("media.peerconnection.enabled", false);
+user_pref("media.peerconnection.enabled", true);
 user_pref("media.peerconnection.ice.default_address_only", true);
 
 // Scrolling

@@ -20,7 +20,7 @@ Xft.antialias: true
 #define base0E #c678dd
 #define base0F #be5046
 
-#define terminalFont JetBrains Mono:size=14:style=Regular:antialias=true:autohint=true
+#define terminalFont Hack:size=14:style=Regular:antialias=true:autohint=true
 
 *foreground:   base05
 #ifdef background_opacity

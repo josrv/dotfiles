@@ -1,5 +1,6 @@
 typeset -U path cdpath fpath manpath
 
+source $HOME/.zsh_profile
 
 export DEFAULT_USER="ivan"
 export EDITOR="nvim"
@@ -13,7 +14,7 @@ export PROMPT="%{$fg[white]%}|%{$fg[blue]%}%n@%m%{$fg[white]%}|%{$fg[red]%}%1~%{
 # autosuggestions
 export ZSH_AUTOSUGGEST_MANUAL_REBIND="true"
 export ZSH_AUTOSUGGEST_USE_ASYNC="true"
-source ~/.local/share/zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # History options should be set in .zshrc and after oh-my-zsh sourcing.
 # See https://github.com/rycee/home-manager/issues/177.

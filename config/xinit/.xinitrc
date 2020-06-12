@@ -1,11 +1,7 @@
 xrdb -merge -I$HOME ~/.Xresources
 
-$HOME/.scripts/configure-keyboard
+setxkbmap -layout us,ru -option 'grp:win_space_toggle' -option 'caps:escape' -option 'compose:menu'
+xmodmap -e "clear Lock"
+xset r rate 200 40
 
-$HOME/.fehbg
-
-# Launch SXHKD
-sxhkd &
-
-# Launch BSPWM
-exec bspwm
+exec awesome
