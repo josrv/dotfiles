@@ -10,6 +10,9 @@ user_pref("extensions.pocket.enabled", false);
 // Rendering
 user_pref("layers.acceleration.force-enabled", true);
 user_pref("layers.gpu-process.force-enabled", true);
+user_pref("gfx.webrender.all", true);
+user_pref("gfx.canvas.azure.accelerated", "true");
+user_pref("media.hardware-video-decoding.force-enabled", "true");
 
 // Behaviour
 user_pref("general.warnOnAboutConfig", false);

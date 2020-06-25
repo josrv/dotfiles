@@ -84,20 +84,15 @@ case `uname` in
 esac
 
 # Custom functions
-
-# si  — install packages
+# si  — search package and install
 si() {
-  local packagename='{ sub(/-[^\-]*$/, "", $2); print $2 }'
-  echo
-  xbps-query -Rs '' | sort | fzf -m --header="Install packages" | awk "$packagename" | xargs -r sudo xbps-install -Sy
+    echo; pkginstall; zle redisplay
 }
 zle -N si{,}
 
-# ui  — uninstall packages
+# ui  — uninstall a package
 ui() {
-  local packagename='{ sub(/-[^\-]*$/, "", $2); print $2 }'
-  echo
-  xbps-query -l | fzf -m --header="Uninstall packages" | awk "$packagename" | xargs -r sudo xbps-remove -Ry
+    pacman -Qq | fzf -m --preview 'pacman -Qi {1}' | xargs -r sudo pacman -R --noconfirm
 }
 zle -N ui{,}
 
