@@ -11,8 +11,8 @@ set shiftwidth=4
 set hidden
 set expandtab
 set laststatus=2
-set showtabline=0
-set undodir=~/.vimundo
+set textwidth=120
+set undodir=~/.local/share/vimundo
 
 set undofile
 
@@ -24,22 +24,17 @@ set showcmd
 " disable mode label
 set noshowmode
 
+" highlight column
+" set colorcolumn=+1
+" :highlight ColorColumn ctermbg=DarkBlue guibg=DarkBlue
+
 " Plugin configs
 let g:lightline = {
       \ 'active': {
-      \   'left': [ ['mode', 'buffers'] ]
-      \ },
-      \ 'component_expand': {
-      \   'buffers': 'lightline#bufferline#buffers',
-      \ },
-      \ 'component_type': {
-      \   'buffers': 'tabsel',
+      \   'left': [ ['mode'] ]
       \ },
       \ 'colorscheme': 'wombat',
       \ }
-
-let g:lightline#bufferline#show_number  = 1
-let g:lightline#bufferline#unnamed      = '[Unnamed]'
 
 " Custom bindings
 map ; A;<Esc>

@@ -1,7 +1,6 @@
 // New tab
 user_pref("browser.newtabpage.activity-stream.feeds.telemetry", false);
-user_pref("browser.newtabpage.activity-stream.telemetry", false);
-user_pref("browser.newtabpage.activity-stream.feeds.snippets", false);
+user_pref("browser.newtabpage.activity-stream.telemetry", false); user_pref("browser.newtabpage.activity-stream.feeds.snippets", false);
 user_pref("browser.newtabpage.activity-stream.feeds.topsites", false);
 user_pref("browser.newtabpage.activity-stream.feeds.highlights", false);
 user_pref("browser.newtabpage.activity-stream.feeds.section.highlights", false);
@@ -11,6 +10,9 @@ user_pref("extensions.pocket.enabled", false);
 // Rendering
 user_pref("layers.acceleration.force-enabled", true);
 user_pref("layers.gpu-process.force-enabled", true);
+user_pref("gfx.webrender.all", true);
+user_pref("gfx.canvas.azure.accelerated", "true");
+user_pref("media.hardware-video-decoding.force-enabled", "true");
 
 // Behaviour
 user_pref("general.warnOnAboutConfig", false);
@@ -43,7 +45,7 @@ user_pref("dom.webnotifications.enabled", false);
 user_pref("dom.webnotifications.serviceworker.enabled", false);
 user_pref("dom.push.enabled", false);
 user_pref("dom.pushconnection.enabled", false);
-user_pref("media.peerconnection.enabled", false);
+user_pref("media.peerconnection.enabled", true);
 user_pref("media.peerconnection.ice.default_address_only", true);
 
 // Scrolling
@@ -52,3 +54,6 @@ user_pref("general.smoothScroll", false);
 user_pref("general.smoothScroll.pages", false);
 user_pref("image.mem.min_discard_timeout_ms", 2100000000);
 user_pref("image.mem.max_decoded_image_kb", "512K");
+
+// Enable userChrome.css
+user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);

@@ -1,13 +1,20 @@
 typeset -U path cdpath fpath manpath
 
+source $HOME/.zsh_profile
 
 export DEFAULT_USER="ivan"
 export EDITOR="nvim"
 
-export PROMPT="|%F{33}%n@%m%f|%F{160}%1~%f> "
+# enable colors
+autoload -U colors && colors
 
+# prompt
+export PROMPT="%{$fg[white]%}|%{$fg[blue]%}%n@%m%{$fg[white]%}|%{$fg[red]%}%1~%{$fg[white]%}> %{$reset_color%}"
+
+# autosuggestions
 export ZSH_AUTOSUGGEST_MANUAL_REBIND="true"
 export ZSH_AUTOSUGGEST_USE_ASYNC="true"
+source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # History options should be set in .zshrc and after oh-my-zsh sourcing.
 # See https://github.com/rycee/home-manager/issues/177.
@@ -77,17 +84,25 @@ case `uname` in
 esac
 
 # Custom functions
-
-# si  — search package and install
+# si — search package and install
 si() {
-    pacman -Slq | fzf -m --preview 'pacman -Si {1}' | xargs -r sudo pacman -S --noconfirm
+    echo; pkginstall; zle redisplay
 }
 zle -N si{,}
 
-# si  — uninstall a package
+# ui — uninstall a package
 ui() {
     pacman -Qq | fzf -m --preview 'pacman -Qi {1}' | xargs -r sudo pacman -R --noconfirm
 }
+zle -N ui{,}
+
+# kill process
+kp() {
+  ps aux | fzf | awk '{print $2}' | xargs -r kill -9
+}
+zle -N kp{,}
 
 # Bindings
 bindkey "^P" si # Install packages
+bindkey "^U" ui # Uninstall packages
+bindkey "^K" kp # Kill process

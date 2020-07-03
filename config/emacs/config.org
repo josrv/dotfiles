@@ -86,9 +86,10 @@ Save backups to one directory
     #+begin_src emacs-lisp
   (straight-use-package 'solarized-theme)
   (load-theme 'solarized-light t)
-  (set-frame-font "Fira Mono 15")
+  (set-frame-font "JetBrains Mono 15")
 
   (customize-set-variable 'inhibit-startup-screen t) ; no splash screen on start
+  (menu-bar-mode -1)   ; no menu bar
   (tool-bar-mode -1)   ; no tool bar with icons
   (scroll-bar-mode -1) ; no scroll bars
     #+end_src
@@ -155,6 +156,7 @@ Use variable pitch (serif font) in Org excluding code blocks and other special b
 (add-hook 'org-mode-hook
            '(lambda ()
                (variable-pitch-mode 1)
+	       (setq truncate-lines nil)
                (mapc
                 (lambda (face) ;; Rescale and inherit the properties from the fixed-pitch font.
                   (set-face-attribute face nil :inherit 'fixed-pitch))
@@ -163,6 +165,13 @@ Use variable pitch (serif font) in Org excluding code blocks and other special b
                       'org-special-keyword 'org-block-begin-line
                       'org-block-end-line 'org-meta-line
                       'org-document-info-keyword))))
+
+#+END_SRC
+
+org-download
+#+BEGIN_SRC emacs-lisp
+(straight-use-package 'org-download)
+(require 'org-download)
 
 #+END_SRC
 ** Modes
@@ -216,7 +225,7 @@ Org jump to a heading
 *** Remember last layout in Insert/Replace mode
 #+BEGIN_SRC emacs-lisp
 
-(if (eq system-type 'gnu/linux)
+(when (eq system-type 'gnu/linux)
 ; saved-layout is a layout that was used in Insert/Replace state.
 (setq saved-layout (shell-command-to-string "xkblayout-state print %c"))
 

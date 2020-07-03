@@ -12,7 +12,7 @@ super + ctrl + q
 
 # Suspend
 super + ctrl + Escape
-    systemctl suspend
+    sudo zzz
 
 #
 # SYSTEM MANAGEMENT
@@ -20,7 +20,7 @@ super + ctrl + Escape
 
 # make sxhkd reload its configuration files:
 super + Escape
-	pkill -USR1 -x sxhkd
+    pkill -USR1 -x sxhkd
 
 # audio controls
 XF86AudioRaiseVolume
@@ -38,26 +38,39 @@ XF86AudioMute
 
 # program launcher
 super + d
-	rofi -show combi -combi-modi window,drun -modi combi
+    $HOME/.scripts/run-with-layout 'rofi -show combi -combi-modi window,drun -modi combi,run'
 
 # terminal emulator
 super + Return
-	alacritty
+    xterm
 
+# browser
 super + y
-    firefox
+    apulse firefox
 
-super + F5
-    screenshot-dmenu
+# browser with a specific profile
+super + Y
+    sed -n -e 's/Name=//p' $HOME/.mozilla/firefox/profiles.ini | rofi -dmenu -p "Choose profile" | xargs -r apulse firefox -P
 
+# open file manager
 super + u
-    wikt
+    xterm lf
 
-super + shift + u
-    wikt "`xclip -o`"
+# open file manager, navigate to bookmark
+super + U
+    cat $HOME/.bookmarks | envsubst | rofi -dmenu -i -p "Open directory" | xargs -r xterm lf
 
-super + o
-    open "`xclip -o`"
+# screenshot (clipboard)
+super + F5
+    sleep 0.1 && scrot -sb -e /tmp/screenshot.png 'xclip -selection clipboard -t image/png $f; rm $f'
+
+# screenshot (file)
+super + shift + F5
+    sleep 0.1 && scrot -sb -e 'mv $f ~/Pictures/Screenshots'
+
+# Emacs
+super + e
+    emacs
 
 #
 # WINDOW MANAGEMENT
@@ -82,7 +95,6 @@ super + m
 # swap the current node and the biggest node
 super + g
 	bspc node -s biggest
-
 #
 # state/flags
 #
@@ -165,3 +177,6 @@ super + alt + shift + {h,j,k,l}
 super + {Left,Down,Up,Right}
 	bspc node -v {-20 0,0 20,0 -20,20 0}
 
+super + shift + r
+    bspc node -f @parent; \
+    bspc node -R 90

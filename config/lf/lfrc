@@ -1,6 +1,7 @@
 set ifs "\n"
 set hidden on
 set drawbox on
+set previewer ~/.config/lf/scope
 
 # Custom commands
 
@@ -14,3 +15,4 @@ cmd open ${{
 
 # Mappings
 map d delete
+map x cut
