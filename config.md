@@ -24,12 +24,3 @@ up /etc/openvpn/update-resolv-conf
 down /etc/openvpn/update-resolv-conf
 EOF
 ```
-
-## Desktop configuration
-1. Lock X session (currently not used)
-sudo cp services/lock@.service /etc/systemd/system/
-
-## Tweaks
-1. Prevent DHCP from slowing startup (currently not used)
-sudo cp services/dhcpcd-no-wait.conf /etc/systemd/system/dhcpcd@.service.d/no-wait.conf
-
