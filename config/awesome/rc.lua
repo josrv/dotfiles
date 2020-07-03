@@ -175,7 +175,10 @@ awful.screen.connect_for_each_screen(function(s)
     s.mytasklist = awful.widget.tasklist {
         screen = s,
         filter = awful.widget.tasklist.filter.currenttags,
-        buttons = tasklist_buttons
+        buttons = tasklist_buttons,
+        layout = {
+            layout = wibox.layout.fixed.horizontal
+        }
     }
 
     -- Create the wibox
@@ -192,6 +195,7 @@ awful.screen.connect_for_each_screen(function(s)
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
+            awful.widget.watch("weather", 600),
             mykeyboardlayout,
             wibox.widget.systray(),
             mytextclock,
@@ -269,6 +273,9 @@ globalkeys = gears.table.join(
         { description = "Launch application or command", group = "programs" }),
 
     awful.key({}, "#135", function() awful.spawn("rofilaunch") end,
+        { description = "Launch application or command", group = "programs" }),
+
+    awful.key({modkey}, "`", function() awful.spawn("rofilaunch") end,
         { description = "Launch application or command", group = "programs" }),
 
     awful.key({modkey}, "Return", function() awful.spawn(terminal) end,

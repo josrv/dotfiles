@@ -84,13 +84,13 @@ case `uname` in
 esac
 
 # Custom functions
-# si  — search package and install
+# si — search package and install
 si() {
     echo; pkginstall; zle redisplay
 }
 zle -N si{,}
 
-# ui  — uninstall a package
+# ui — uninstall a package
 ui() {
     pacman -Qq | fzf -m --preview 'pacman -Qi {1}' | xargs -r sudo pacman -R --noconfirm
 }
