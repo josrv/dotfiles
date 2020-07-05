@@ -287,6 +287,9 @@ globalkeys = gears.table.join(
     awful.key({modkey}, "y", function() awful.spawn("firefox") end,
         { description = "Web browser", group = "programs" }),
 
+    awful.key({modkey, "Shift"}, "y", function() awful.spawn("firefoxwp") end,
+        { description = "Web browser with profile", group = "programs" }),
+
     awful.key({modkey}, "d", function() awful.spawn("thunar") end,
         { description = "File manager", group = "programs" }),
 

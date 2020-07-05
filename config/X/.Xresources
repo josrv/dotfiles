@@ -82,5 +82,5 @@ rofi.color-active:  	base00, base0D, base00, base0A, base00
 rofi.color-urgent:  	base00, base08, base00, base0A, base00
 
 rofi.separator-style: 	solid
-rofi.sidebar-mode: 	true
+rofi.sidebar-mode: 	    true
 rofi.hide-scrollbar:	true
