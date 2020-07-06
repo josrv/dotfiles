@@ -59,6 +59,7 @@ modkey = "Mod4"
 beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
 beautiful.useless_gap = 6 
 beautiful.border_width = 2
+beautiful.gap_single_client = false
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
@@ -287,9 +288,6 @@ globalkeys = gears.table.join(
     awful.key({modkey}, "y", function() awful.spawn("firefox") end,
         { description = "Web browser", group = "programs" }),
 
-    awful.key({modkey, "Shift"}, "y", function() awful.spawn("firefoxwp") end,
-        { description = "Web browser with profile", group = "programs" }),
-
     awful.key({modkey}, "d", function() awful.spawn("thunar") end,
         { description = "File manager", group = "programs" }),
 
@@ -306,6 +304,9 @@ globalkeys = gears.table.join(
         -- TODO: don't spawn another scratchpad if there is already one active
         awful.spawn(terminal.." -title scratch -e 'screen -r scratchpad 2>&1 >/dev/null || screen -S scratchpad'")
     end, { description = "Scratchpad", group = "programs" }),
+
+    awful.key({modkey}, ",", function() awful.spawn.with_shell("ENTER_CMD='(auto_type password)' bwmenu") end,
+        { description = "Bitwarden", group = "programs" }),
 
     -- Layout
     awful.key({modkey}, "l", function() awful.tag.incmwfact(0.05) end,
@@ -475,7 +476,8 @@ awful.rules.rules = {
         rule = { name = "scratch" },
         properties = {
             floating = true,
-            maximized_horizontal = true
+            maximized_horizontal = true,
+            ontop = true
         }
     }
 }
@@ -491,6 +493,9 @@ client.connect_signal("manage", function(c)
         -- Prevent clients from being unreachable after screen count changes.
         awful.placement.no_offscreen(c)
     end
+
+    if client.instances() == 1 then awful.client.setwfact(0.75, c) end
+
 end)
 
 -- Enable sloppy focus, so that focus follows mouse.
