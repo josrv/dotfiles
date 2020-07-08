@@ -16,6 +16,8 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
 
+local utils = require("utils")
+
 --
 -- ERROR HANDLING
 --
@@ -56,23 +58,24 @@ editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
 modkey = "Mod4"
 
-beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
-beautiful.useless_gap = 6 
-beautiful.border_width = 2
+beautiful.init(string.format("%s/.config/awesome/themes/%s/theme.lua", os.getenv("HOME"), "holo"))
 beautiful.gap_single_client = false
 
--- Table of layouts to cover with awful.layout.inc, order matters.
+beautiful.systray_icon_spacing = 1
+
 awful.layout.layouts = {
-    awful.layout.suit.floating,
     awful.layout.suit.tile,
     awful.layout.suit.max,
-    awful.layout.suit.magnifier,
+    awful.layout.suit.max,
+    awful.layout.suit.floating,
 }
+
+awful.util.tagnames = { "MISC", "WEB", "IDE", "CHAT" }
 
 --
 -- MENUBAR
 --
-
+--[[
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
 mykeyboardlayout = awful.widget.keyboardlayout()
 mytextclock = wibox.widget.textclock()
@@ -103,51 +106,51 @@ local tasklist_buttons = gears.table.join(
 
 awful.screen.connect_for_each_screen(function(s)
     -- Tags
-    awful.tag.add('1', { -- Terminal
+    awful.tag.add('  1  ', { -- Terminal
         screen = s,
         layout = awful.layout.suit.tile,
         master_width_factor = 0.75,
         master_fill_policy = 'master_width_factor'
     })
-    awful.tag.add('2', { -- Web
+    awful.tag.add('  2  ', { -- Web
         screen = s,
         layout = awful.layout.suit.tile,
         master_width_factor = 0.7,
         master_fill_policy = 'master_width_factor'
     })
-    awful.tag.add('3', { -- IDE
+    awful.tag.add('  3  ', { -- IDE
         screen = s,
         layout = awful.layout.suit.max
     })
-    awful.tag.add('4', { -- Telegram
+    awful.tag.add('  4  ', { -- Telegram
         screen = s,
         layout = awful.layout.suit.floating
     })
-    awful.tag.add('5', {
+    awful.tag.add('  5  ', {
         screen = s,
         layout = awful.layout.suit.tile,
         master_width_factor = 0.7,
         master_fill_policy = 'master_width_factor'
     })
-    awful.tag.add('6', {
+    awful.tag.add('  6  ', {
         screen = s,
         layout = awful.layout.suit.tile,
         master_width_factor = 0.7,
         master_fill_policy = 'master_width_factor'
     })
-    awful.tag.add('7', {
+    awful.tag.add('  7  ', {
         screen = s,
         layout = awful.layout.suit.tile,
         master_width_factor = 0.7,
         master_fill_policy = 'master_width_factor'
     })
-    awful.tag.add('8', {
+    awful.tag.add('  8  ', {
         screen = s,
         layout = awful.layout.suit.tile,
         master_width_factor = 0.7,
         master_fill_policy = 'master_width_factor'
     })
-    awful.tag.add('9', {
+    awful.tag.add('  9  ', {
         screen = s,
         layout = awful.layout.suit.tile,
         master_width_factor = 0.7,
@@ -183,7 +186,15 @@ awful.screen.connect_for_each_screen(function(s)
     }
 
     -- Create the wibox
-    s.mywibox = awful.wibar({position = "top", screen = s})
+    s.mywibox = awful.wibar({
+        position = "top", 
+        screen = s,
+        height = 24 
+    })
+
+
+    local systray = wibox.widget.systray()
+    systray:set_base_size(16)
 
     -- Add widgets to the wibox
     s.mywibox:setup{
@@ -196,15 +207,28 @@ awful.screen.connect_for_each_screen(function(s)
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
+            {
+                widget = wibox.container.margin,
+                top = 4,
+                right = 4,
+                systray,
+            },
             awful.widget.watch("weather", 600),
-            mykeyboardlayout,
-            wibox.widget.systray(),
-            mytextclock,
+            {
+                widget = wibox.container.margin,
+                left = 4,
+                mykeyboardlayout
+            },
+            {
+                widget = wibox.container.margin,
+                left = 4,
+                mytextclock
+            },
             s.mylayoutbox
         }
     }
 end)
-
+--]]
 --
 -- KEY BINDINGS
 --
@@ -219,7 +243,7 @@ globalkeys = gears.table.join(
     awful.key({modkey, "Control"}, "r", awesome.restart,
         { description = "reload awesome", group = "system" }),
 
-    awful.key({modkey, "Shift"}, "w", awesome.quit,
+    awful.key({modkey, "Shift"}, "F12", awesome.quit,
         { description = "quit awesome", group = "system"}),
 
     awful.key({}, "XF86AudioRaiseVolume", function() awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ +5%") end,
@@ -301,12 +325,16 @@ globalkeys = gears.table.join(
         { description = "Toggle services", group = "programs" }),
 
     awful.key({modkey}, "\\", function() 
-        -- TODO: don't spawn another scratchpad if there is already one active
-        awful.spawn(terminal.." -title scratch -e 'screen -r scratchpad 2>&1 >/dev/null || screen -S scratchpad'")
+        awful.screen.focused().quake:toggle()
     end, { description = "Scratchpad", group = "programs" }),
 
     awful.key({modkey}, ",", function() awful.spawn.with_shell("ENTER_CMD='(auto_type password)' bwmenu") end,
         { description = "Bitwarden", group = "programs" }),
+
+    awful.key({modkey, "Shift"}, "w",
+        function()
+            beautiful.weather.show(5)
+        end, { description = "Show weather popup", group = "programs" }),
 
     -- Layout
     awful.key({modkey}, "l", function() awful.tag.incmwfact(0.05) end,
@@ -403,6 +431,9 @@ clientbuttons = gears.table.join(
 )
 
 root.keys(globalkeys)
+
+-- Create a wibox for each screen and add it
+awful.screen.connect_for_each_screen(function(s) beautiful.at_screen_connect(s) end)
 
 --
 -- RULES
@@ -505,4 +536,17 @@ end)
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+
+-- No borders when rearranging only 1 non-floating or maximized client
+screen.connect_signal("arrange", function (s)
+    local only_one = #s.tiled_clients == 1
+    for _, c in pairs(s.clients) do
+        if only_one and not c.floating or c.maximized then
+            c.border_width = 0
+        else
+            c.border_width = beautiful.border_width
+        end
+    end
+end)
+
 
