@@ -37,4 +37,5 @@ let g:lightline = {
       \ }
 
 " Custom bindings
-map ; A;<Esc>
+map <C-N> :noh<cr>
+
