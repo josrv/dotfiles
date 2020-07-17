@@ -5,9 +5,7 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
 
---
--- KEY BINDINGS
---
+local modkey = "Mod4"
 
 local bindings = {
     keys = {},
@@ -117,7 +115,7 @@ bindings.keys.global = gears.table.join(
 
     awful.key({ modkey }, "Return",
     function()
-        awful.spawn(terminal)
+        awful.spawn("xterm")
     end, { description = "open terminal", group = "programs" }),
 
     awful.key({ modkey }, "r",
@@ -162,7 +160,7 @@ bindings.keys.global = gears.table.join(
 
     awful.key({ modkey, "Shift" }, "w",
     function()
-        bar.weather.show(5)
+        awful.screen.focused().bar.weather.show(5)
     end, { description = "show weather popup", group = "programs" }),
 
     -- Layout

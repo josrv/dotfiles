@@ -93,24 +93,20 @@ awful.rules.rules = {
             size_hints_honor = false -- Terminal will correctly fit its space.
         }
     }, 
+
     -- Floating clients.
     {
         rule_any = {
             instance = {
-                "DTA", -- Firefox addon DownThemAll.
-                "copyq", -- Includes session name in class.
                 "pinentry"
             },
             class = {
-                "Arandr", "Blueman-manager", "Gpick", "Kruler", "MessageWin", -- kalarm.
+                "Arandr",
                 "Sxiv",
-                "Tor Browser", -- Needs a fixed window size to avoid fingerprinting by screen size.
-                "Wpa_gui", "veromix", "Telegram", "xtightvncviewer",
+                "Tor Browser",
+                "Telegram",
                 "mpv"
             },
-
-            -- Note that the name property shown in xprop might be set slightly after creation of the client
-            -- and the name shown there might not match defined rules here.
             name = {
                 "Event Tester" -- xev.
             },
@@ -120,11 +116,16 @@ awful.rules.rules = {
                 "pop-up" -- e.g. Google Chrome's (detached) Developer Tools.
             }
         },
+        rule = {
+            class = "firefox",
+            instance = "Devtools"
+        },
         properties = { floating = true }
-    }, 
+    },
+
     -- Disable titlebars.
     {
-        rule_any = { type = {"normal", "dialog"} },
+        rule_any = { type = { "normal", "dialog" } },
         properties = { titlebars_enabled = false }
     }, 
 
@@ -140,15 +141,27 @@ awful.rules.rules = {
         }
     },
 
-    -- Tags 
-     { rule = { class = "Firefox" },
-       properties = { tag = "WEB", switchtotag = true } }
+    -- Tags.
+    {
+        rule = { class = "jetbrains-.*" },
+        properties = { tag = "IDE", switchtotag = true }
+    },
+    { 
+        rule = { class = "firefox" },
+        properties = { tag = "WEB", switchtotag = true }
+    },
+    {
+        rule = { class = "Telegram" },
+        properties = { tag = "CHAT", switchtotag = true }
+    },
+    {
+        rule = { class = "mpv" },
+        properties = { tag = "MEDIA", switchtotag = true }
+    }
 }
 
 -- Signal function to execute when a new client appears.
 client.connect_signal("manage", function(c)
-    -- Set the windows at the slave,
-    -- i.e. put it at the end of others instead of setting it master.
     if not awesome.startup then awful.client.setslave(c) end
 
     if awesome.startup and not c.size_hints.user_position and
@@ -156,12 +169,9 @@ client.connect_signal("manage", function(c)
         -- Prevent clients from being unreachable after screen count changes.
         awful.placement.no_offscreen(c)
     end
-
-    if client.instances() == 1 then awful.client.setwfact(0.75, c) end
-
 end)
 
--- Enable sloppy focus, so that focus follows mouse.
+-- Focus follows mouse.
 client.connect_signal("mouse::enter", function(c)
     c:emit_signal("request::activate", "mouse_enter", { raise = false })
 end)
@@ -169,7 +179,7 @@ end)
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 
--- No borders when rearranging only 1 non-floating or maximized client
+-- No borders when rearranging only 1 non-floating or maximized client.
 screen.connect_signal("arrange", function (s)
     local only_one = #s.tiled_clients == 1
     for _, c in pairs(s.clients) do
@@ -181,7 +191,7 @@ screen.connect_signal("arrange", function (s)
     end
 end)
 
--- Focus urgent clients automatically
+-- Focus urgent clients automatically.
 client.connect_signal("property::urgent", function(c)
     c.minimized = false
     c:jump_to()

@@ -102,7 +102,6 @@ local spr_very_small = wibox.widget.imagebox(theme.spr_very_small)
 local spr_right = wibox.widget.imagebox(theme.spr_right)
 local spr_bottom_right = wibox.widget.imagebox(theme.spr_bottom_right)
 local spr_left = wibox.widget.imagebox(theme.spr_left)
-local bar = wibox.widget.imagebox(theme.bar)
 local bottom_bar = wibox.widget.imagebox(theme.bottom_bar)
 
 local barcolor  = gears.color({
@@ -182,6 +181,9 @@ function bar.create(s)
             clockwidget,
         },
     }
+
+    -- Assign bar to the screen.
+    s.bar = bar
 end
 
 return bar
