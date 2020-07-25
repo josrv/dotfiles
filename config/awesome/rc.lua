@@ -176,8 +176,14 @@ client.connect_signal("mouse::enter", function(c)
     c:emit_signal("request::activate", "mouse_enter", { raise = false })
 end)
 
-client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
-client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+client.connect_signal("focus", function(c)
+    c.border_color = beautiful.border_focus
+end)
+
+client.connect_signal("unfocus", function(c)
+    c.border_color = beautiful.border_normal
+    awful.last_focused_client = c
+end)
 
 -- No borders when rearranging only 1 non-floating or maximized client.
 screen.connect_signal("arrange", function (s)

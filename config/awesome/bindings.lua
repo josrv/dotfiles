@@ -51,7 +51,11 @@ bindings.keys.global = gears.table.join(
         awful.tag.viewnext, { description = "view next", group = "tag" }),
 
     awful.key({ modkey }, "Tab",
-        awful.tag.history.restore, { description = "go back", group = "tag" }),
+    function()
+        local screen = awful.last_focused_client.screen
+        awful.last_focused_client:emit_signal("request::activate", "Switch to previous", { raise = true })
+        awful.screen.focus(screen)
+    end, { description = "go back", group = "tag" }),
 
     -- Client
     awful.key({ modkey }, "j",
