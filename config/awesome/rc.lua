@@ -152,7 +152,7 @@ awful.rules.rules = {
     },
     {
         rule = { class = "Telegram" },
-        properties = { tag = "CHAT", switchtotag = true }
+        properties = { screen = 2, tag = "CHAT", switchtotag = true }
     },
     {
         rule = { class = "mpv" },

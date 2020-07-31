@@ -4,6 +4,7 @@ local lain  = require("lain")
 local awful = require("awful")
 local wibox = require("wibox")
 local dpi   = require("beautiful.xresources").apply_dpi
+local naughty = require("naughty")
 
 local colors = require("beautiful.xresources").get_current_theme()
 local markup = lain.util.markup
@@ -14,15 +15,14 @@ local space3 = markup.font("Roboto 3", " ")
 local bar = {}
 
 -- Clock
-local mytextclock = wibox.widget.textclock(markup("#FFFFFF", space3 .. "%H:%M   " .. markup.font("Roboto 4", " ")))
+local mytextclock = wibox.widget.textclock("🕑 %H:%M ")
 mytextclock.font = theme.font
-local clock_icon = wibox.widget.imagebox(theme.clock)
 local clockbg = wibox.container.background(mytextclock, theme.bg_focus, gears.shape.rectangle)
 local clockwidget = wibox.container.margin(clockbg, dpi(0), dpi(3), dpi(5), dpi(5))
 
 -- Calendar
-local mytextcalendar = wibox.widget.textclock(markup.fontfg(theme.font, "#FFFFFF", space3 .. "%a %d %b " .. markup.font("Roboto 5", " ")))
-local calendar_icon = wibox.widget.imagebox(theme.calendar)
+local mytextcalendar = wibox.widget.textclock("🗓️ %a %d %b")
+mytextcalendar.font = theme.font
 local calbg = wibox.container.background(mytextcalendar, theme.bg_focus, gears.shape.rectangle)
 local calendarwidget = wibox.container.margin(calbg, dpi(0), dpi(0), dpi(5), dpi(5))
 
@@ -77,14 +77,24 @@ systray:set_base_size(dpi(20))
 local systraywidget = wibox.container.margin(systray, dpi(0), dpi(4), dpi(6), dpi(4))
 
 -- Weather
+
+local icons = {
+    clouds = "☁️",
+    rain = "☔",
+    snow = "❄️",
+    clear = "☀️",
+    thunderstorm = "🌩️"
+}
+
 local weather = lain.widget.weather({
     city_id = 498817,
     notification_preset = { font = "Monospace 9", position = "bottom_right" },
     lang = "ru",
     settings = function()
-        local descr = weather_now["weather"][1]["description"]:lower()
+        local descr = weather_now["weather"][1]["main"]:lower()
+        local icon = icons[descr] or "⛅"
         local units = math.floor(weather_now["main"]["temp"])
-        widget:set_markup(lain.util.markup.fontfg(theme.font, theme.fg_normal, units .. "°C"))
+        widget:set_markup(lain.util.markup.fontfg(theme.font, theme.fg_normal, icon .. " " .. units .. "°C"))
     end
 })
 local weatherwidget = wibox.container.margin(wibox.container.background(weather.widget, theme.bg_focus, gears.shape.rectangle), dpi(0), dpi(0), dpi(5), dpi(5))
@@ -94,6 +104,47 @@ bar.weather = weather
 local keyboardlayout = awful.widget.keyboardlayout()
 keyboardlayout.widget.font = theme.font
 local keyboardwidget = wibox.container.margin(wibox.container.background(keyboardlayout, theme.bg_focus, gears.shape.rectangle), dpi(0), dpi(0), dpi(5), dpi(5))
+
+-- Camera monitor
+local cameramon = wibox.widget { 
+    text = "w",
+    widget = wibox.widget.textbox
+}
+local cameramonwidget = wibox.container.margin(wibox.container.background(cameramon, theme.bg_focus, gears.shape.rectangle), dpi(0), dpi(0), dpi(5), dpi(5))
+
+cameramon.show_processes = function()
+    cameramon.hide_processes()
+
+    if cameramon.processes then
+        cameramon.process_list = naughty.notify {
+            title = "List of processes using camera (/dev/video0)",
+            text = cameramon.processes,
+            position = 'bottom_right',
+            timeout = 0
+        }
+    end
+end
+
+cameramon.hide_processes = function()
+    if cameramon.process_list then
+        naughty.destroy(cameramon.process_list)
+    end
+end
+
+awful.spawn.with_line_callback("devmon /dev/video0", 
+    { stdout = function(line)
+        if line ~= '' then
+            cameramon.text = '📷'
+        else
+            cameramon.text = ''
+        end
+
+        cameramon.processes = line
+    end
+    })
+
+cameramon:connect_signal("mouse::enter", cameramon.show_processes)
+cameramon:connect_signal("mouse::leave", cameramon.hide_processes)
 
 -- Separators
 local first = wibox.widget.textbox('<span font="Roboto 7"> </span>')
@@ -165,16 +216,16 @@ function bar.create(s)
             layout = wibox.layout.fixed.horizontal,
             systraywidget,
             spr_small,
+            cameramonwidget,
+            bottom_bar,
             weatherwidget,
             bottom_bar,
-            cpu_icon,
             cpuwidget,
             bottom_bar,
             memorywidget,
             bottom_bar,
             keyboardwidget,
             bottom_bar,
-            calendar_icon,
             calendarwidget,
             bottom_bar,
             clock_icon,

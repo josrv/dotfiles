@@ -52,9 +52,11 @@ bindings.keys.global = gears.table.join(
 
     awful.key({ modkey }, "Tab",
     function()
-        local screen = awful.last_focused_client.screen
-        awful.last_focused_client:emit_signal("request::activate", "Switch to previous", { raise = true })
-        awful.screen.focus(screen)
+        if awful.last_focused_client then
+            local screen = awful.last_focused_client.screen
+            awful.last_focused_client:emit_signal("request::activate", "Switch to previous", { raise = true })
+            awful.screen.focus(screen)
+        end
     end, { description = "go back", group = "tag" }),
 
     -- Client
@@ -235,7 +237,12 @@ bindings.keys.client = gears.table.join(
     function(c)
         c.maximized_horizontal = not c.maximized_horizontal
         c:raise()
-    end, { description = "(un)maximize horizontally", group = "client" })
+    end, { description = "(un)maximize horizontally", group = "client" }),
+
+    awful.key({ modkey }, "#61", -- slash
+    function(c)
+        c:move_to_screen(c.screen.index + 1)
+    end, { description = "move client to the other screen", group = "client" })
 )
 
 for i = 1, 9 do
