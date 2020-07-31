@@ -104,7 +104,8 @@ keyboardlayout.widget.forced_width = dpi(25)
 keyboardlayout.widget.align = "center"
 local keyboardwidget = wibox.container.margin(wibox.container.background(keyboardlayout, theme.bg_focus, gears.shape.rectangle), dpi(0), dpi(0), dpi(5), dpi(5))
 
--- Camera monitor local cameramon = wibox.widget.textbox()
+-- Camera monitor
+local cameramon = wibox.widget.textbox()
 local cameramonwidget = wibox.container.margin(wibox.container.background(cameramon, theme.bg_focus, gears.shape.rectangle), dpi(0), dpi(0), dpi(5), dpi(5))
 
 cameramon.show_processes = function()

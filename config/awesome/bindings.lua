@@ -121,7 +121,7 @@ bindings.keys.global = gears.table.join(
 
     awful.key({ modkey }, "Return",
     function()
-        awful.spawn("xterm")
+        awful.spawn("termite")
     end, { description = "open terminal", group = "programs" }),
 
     awful.key({ modkey }, "r",

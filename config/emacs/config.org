@@ -86,7 +86,7 @@ Save backups to one directory
     #+begin_src emacs-lisp
   (straight-use-package 'solarized-theme)
   (load-theme 'solarized-light t)
-  (set-frame-font "JetBrains Mono 15")
+  (set-frame-font "JetBrains Mono 13")
 
   (customize-set-variable 'inhibit-startup-screen t) ; no splash screen on start
   (menu-bar-mode -1)   ; no menu bar

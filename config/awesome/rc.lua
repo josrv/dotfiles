@@ -58,7 +58,7 @@ root.keys(bindings.keys.global)
 
 awful.screen.connect_for_each_screen(function(s)
     -- Quake application
-    s.quake = lain.util.quake({ app = "xterm", height = 0.45 })
+    s.quake = lain.util.quake({ app = "termite", height = 0.45 })
 
     -- If wallpaper is a function, call it with the screen
     local wallpaper = beautiful.wallpaper
