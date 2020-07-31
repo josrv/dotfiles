@@ -17,12 +17,16 @@ local bar = {}
 -- Clock
 local mytextclock = wibox.widget.textclock("🕑 %H:%M ")
 mytextclock.font = theme.font
+mytextclock.forced_width = dpi(55)
+mytextclock.align = "center"
 local clockbg = wibox.container.background(mytextclock, theme.bg_focus, gears.shape.rectangle)
 local clockwidget = wibox.container.margin(clockbg, dpi(0), dpi(3), dpi(5), dpi(5))
 
 -- Calendar
 local mytextcalendar = wibox.widget.textclock("🗓️ %a %d %b")
 mytextcalendar.font = theme.font
+mytextcalendar.forced_width = dpi(70)
+mytextcalendar.align = "center"
 local calbg = wibox.container.background(mytextcalendar, theme.bg_focus, gears.shape.rectangle)
 local calendarwidget = wibox.container.margin(calbg, dpi(0), dpi(0), dpi(5), dpi(5))
 
@@ -40,36 +44,27 @@ local cal = lain.widget.cal({
 local cpu_icon = wibox.widget.imagebox(theme.cpu)
 local cpu = lain.widget.cpu({
     settings = function()
-        widget:set_markup(space3 .. markup.font(theme.font, "CPU " .. cpu_now.usage
-                          .. "% ") .. markup.font("Roboto 5", " "))
+        widget:set_markup("CPU " .. cpu_now.usage .. "%")
     end
 })
+cpu.widget.forced_width = dpi(55) 
+cpu.widget.font = theme.font
+cpu.widget.align = "center"
 local cpubg = wibox.container.background(cpu.widget, theme.bg_focus, gears.shape.rectangle)
 local cpuwidget = wibox.container.margin(cpubg, dpi(0), dpi(0), dpi(5), dpi(5))
 
 -- Memory
 local memory = lain.widget.mem({
     settings = function()
-        widget:set_markup(space3 .. markup.font(theme.font, "RAM " .. mem_now.perc .. "% ") .. markup.font("Roboto 5", " "))
+        widget:set_markup(space3 .. markup.font(theme.font, "RAM " .. mem_now.perc .. "%"))
     end
 })
+memory.widget.forced_width = dpi(55) 
+memory.widget.font = theme.font
+memory.widget.align = "center"
 local memorywidget = wibox.container.margin(
     wibox.container.background(memory.widget, theme.bg_focus, gears.shape.rectangle), dpi(0), dpi(0), dpi(5), dpi(5)
 )
-
--- Net
-local netdown_icon = wibox.widget.imagebox(theme.net_down)
-local netup_icon = wibox.widget.imagebox(theme.net_up)
-local net = lain.widget.net({
-    notify = "off",
-    wifi_state = "on",
-    eth_state = "on",
-    settings = function()
-        --widget:set_markup(markup.font(theme.font, net_now.devices.wlp7s0.wifi))
-    end
-})
-local netbg = wibox.container.background(net.widget, theme.bg_focus, gears.shape.rectangle)
-local networkwidget = wibox.container.margin(netbg, dpi(0), dpi(0), dpi(5), dpi(5))
 
 -- Systray
 local systray = wibox.widget.systray()
@@ -97,19 +92,19 @@ local weather = lain.widget.weather({
         widget:set_markup(lain.util.markup.fontfg(theme.font, theme.fg_normal, icon .. " " .. units .. "°C"))
     end
 })
+weather.widget.forced_width = dpi(50)
+weather.widget.align = "center"
 local weatherwidget = wibox.container.margin(wibox.container.background(weather.widget, theme.bg_focus, gears.shape.rectangle), dpi(0), dpi(0), dpi(5), dpi(5))
 bar.weather = weather
 
 -- Keyboard layout
 local keyboardlayout = awful.widget.keyboardlayout()
 keyboardlayout.widget.font = theme.font
+keyboardlayout.widget.forced_width = dpi(25)
+keyboardlayout.widget.align = "center"
 local keyboardwidget = wibox.container.margin(wibox.container.background(keyboardlayout, theme.bg_focus, gears.shape.rectangle), dpi(0), dpi(0), dpi(5), dpi(5))
 
--- Camera monitor
-local cameramon = wibox.widget { 
-    text = "w",
-    widget = wibox.widget.textbox
-}
+-- Camera monitor local cameramon = wibox.widget.textbox()
 local cameramonwidget = wibox.container.margin(wibox.container.background(cameramon, theme.bg_focus, gears.shape.rectangle), dpi(0), dpi(0), dpi(5), dpi(5))
 
 cameramon.show_processes = function()
