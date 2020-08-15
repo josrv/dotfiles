@@ -6,8 +6,9 @@ set -e
 set -o pipefail
 
 # Display services and choose one with Rofi.
-items="💤 Sleep\n🌀 Hibernate\n🔄 Reboot\n⏹️ Poweroff"
+items="💤 Sleep\n🌀 Hibernate\n🎮 Reboot to Windows\n🔄 Reboot\n⏹️ Poweroff"
 
+# Choose an action.
 action=$(echo -e $items | rofi -dmenu -p "select action" -matching fuzzy | cut -d' ' -f2)
 
 case $action in
@@ -16,6 +17,9 @@ case $action in
         ;;
     Hibernate)
         systemctl hibernate
+        ;;
+    Reboot to Windows)
+        sudo reboot-to-windows
         ;;
     Reboot)
         reboot
