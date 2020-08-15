@@ -9,22 +9,22 @@ set -o pipefail
 items="💤 Sleep\n🌀 Hibernate\n🎮 Reboot to Windows\n🔄 Reboot\n⏹️ Poweroff"
 
 # Choose an action.
-action=$(echo -e $items | rofi -dmenu -p "select action" -matching fuzzy | cut -d' ' -f2)
+action=$(echo -e $items | rofi -dmenu -p "select action" -matching fuzzy -i)
 
 case $action in
-    Sleep)
+    *Sleep)
         systemctl suspend
         ;;
-    Hibernate)
+    *Hibernate)
         systemctl hibernate
         ;;
-    Reboot to Windows)
+    *"Reboot to Windows")
         sudo reboot-to-windows
         ;;
-    Reboot)
+    *Reboot)
         reboot
         ;;
-    Poweroff)
+    *Poweroff)
         poweroff
         ;;
 esac
