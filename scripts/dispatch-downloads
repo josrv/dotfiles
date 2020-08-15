@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# Watches source directory for new downloaded files and asks where to put them via dmenu
+
+cd $HOME
+SOURCE_DIR="Downloads"
+TARGET_DIRS="Books Video"
+
+inotifywait -m --format "%w%f" -e close_write $SOURCE_DIR --exclude "\.part$" | while read path; do
+    TARGET_DIR=$(find $TARGET_DIRS -maxdepth 0 -type d | sed -e "s/\.\///g" | dmenu -p "Download destination:")
+    if [ -n "$TARGET_DIR" ]; then
+        mv "$path" "$HOME/$TARGET_DIR"
+    fi
+done

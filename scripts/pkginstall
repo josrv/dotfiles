@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# Prompts user to select and install package(s) using AUR wrapper.
+
+PACKAGE=$(yay -Pc | fzf -m --preview 'yay -Si {1}' | cut -f1 -)
+yay -S $PACKAGE

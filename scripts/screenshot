@@ -1,0 +1,7 @@
+#!/bin/bash
+
+TYPE=${1:-clipboard}
+
+[[ "$TYPE" == "clipboard" ]] && \
+    sleep 0.1 && scrot -sb /tmp/screenshot.png -e 'xclip -selection clipboard -t image/png $f; rm $f' || \
+    sleep 0.1 && scrot -sb -e 'mkdir -p ~/pictures/screenshots && mv $f ~/pictures/screenshots/$f'

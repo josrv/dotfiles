@@ -1,0 +1,2 @@
+#!/bin/sh
+deflayout rofi -show combi -combi-modi window,drun -modi combi,run -show-icons

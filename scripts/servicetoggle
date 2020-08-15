@@ -1,0 +1,23 @@
+#!/bin/bash
+# vi: ft=bash
+
+# Read systemd service names from stdin, choose one using rofi and toggle its state.
+
+set -u
+set -e
+set -o pipefail
+
+# Display services and choose one with Rofi.
+service=$(cat | xargs -n1 -I{} sh -c 'echo `systemctl is-active {}` {}' | sort -k1 | rofi -dmenu -p "service" -matching fuzzy)
+
+IFS=' ' read state name <<<"$service"
+
+# Use custom sudo askpass program.
+export SUDO_ASKPASS="/usr/bin/rofiaskpass"
+
+# Toggle chosen service state.
+[[ $state == 'active' ]] && sudo -A systemctl stop $name || sudo -A systemctl start $name
+
+# Send notification.
+notify-send "$name is now $(systemctl is-active $name)"
+

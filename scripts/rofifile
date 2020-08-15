@@ -1,0 +1,2 @@
+#!/bin/sh
+rofi -modi file-browser -show file-browser -file-browser-depth 1 -show-icons true -matching fuzzy

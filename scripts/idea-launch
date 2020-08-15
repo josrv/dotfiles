@@ -1,0 +1,8 @@
+#!/usr/bin/env perl
+
+# Enables stopping launched processes in IDEA with SIGINT.
+
+$SIG{INT} = 'DEFAULT';
+$SIG{TERM} = 'DEFAULT';
+
+exec "/usr/share/jetbrains-idea-ce/bin/idea.sh";

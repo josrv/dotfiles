@@ -1,0 +1,27 @@
+#!/bin/bash
+# vi: ft=bash
+
+set -u
+set -e
+set -o pipefail
+
+# Display services and choose one with Rofi.
+items="💤 Sleep\n🌀 Hibernate\n🔄 Reboot\n⏹️ Poweroff"
+
+action=$(echo -e $items | rofi -dmenu -p "select action" -matching fuzzy | cut -d' ' -f2)
+
+case $action in
+    Sleep)
+        systemctl suspend
+        ;;
+    Hibernate)
+        systemctl hibernate
+        ;;
+    Reboot)
+        reboot
+        ;;
+    Poweroff)
+        poweroff
+        ;;
+esac
+

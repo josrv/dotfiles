@@ -1,0 +1,24 @@
+#!/bin/bash
+
+__USAGE="
+deflayout - execute command with the default keyboard layout
+
+Usage: deflayout COMMAND
+"
+
+if [ "$#" -eq 0 ] || [ "$1" == "-h" ]; then
+    echo "$__USAGE"
+fi
+
+# Save current layout.
+CURRENT_LAYOUT=`xkblayout-state print %c`
+
+# Change to the default layout.
+xkblayout-state set 0
+
+# Execute command.
+eval '$*'
+
+# Restore the layout.
+xkblayout-state set $CURRENT_LAYOUT
+
