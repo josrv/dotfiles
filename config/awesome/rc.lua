@@ -105,7 +105,7 @@ awful.rules.rules = {
                 "Sxiv",
                 "Tor Browser",
                 "Telegram",
-                "mpv"
+                "mpv",
             },
             name = {
                 "Event Tester" -- xev.
@@ -141,6 +141,18 @@ awful.rules.rules = {
         }
     },
 
+    -- Prompts.
+    {
+        rule = {
+            class = "Gcr-prompter" -- Gnome Keyring password prompt.
+        },
+        properties = {
+            floating = true,
+            focus = true,
+            placement = awful.placement.centered
+        }
+    },
+
     -- Tags.
     {
         rule = { class = "jetbrains-.*" },
@@ -157,7 +169,12 @@ awful.rules.rules = {
     {
         rule = { class = "mpv" },
         properties = { tag = "MEDIA", switchtotag = true }
+    },
+    {
+        rule = { class = "zoom" },
+        properties = { screen = 2, tag = "MEDIA", switchtotag = true }
     }
+
 }
 
 -- Signal function to execute when a new client appears.
@@ -197,9 +214,13 @@ screen.connect_signal("arrange", function (s)
     end
 end)
 
--- Focus urgent clients automatically.
+-- Focus urgent clients automatically (excluding some clients).
+local excluded_for_urgent_jumps = { { class = "Telegram" } }
 client.connect_signal("property::urgent", function(c)
     c.minimized = false
-    c:jump_to()
+    
+    ---if not awful.rules.matches_list(c, excluded_for_urgent_jumps) then
+        ---c:jump_to()
+   -- end
 end)
 

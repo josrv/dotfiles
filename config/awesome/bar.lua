@@ -25,7 +25,7 @@ local clockwidget = wibox.container.margin(clockbg, dpi(0), dpi(3), dpi(5), dpi(
 -- Calendar
 local mytextcalendar = wibox.widget.textclock("🗓️ %a %d %b")
 mytextcalendar.font = theme.font
-mytextcalendar.forced_width = dpi(70)
+mytextcalendar.forced_width = dpi(80)
 mytextcalendar.align = "center"
 local calbg = wibox.container.background(mytextcalendar, theme.bg_focus, gears.shape.rectangle)
 local calendarwidget = wibox.container.margin(calbg, dpi(0), dpi(0), dpi(5), dpi(5))
@@ -89,7 +89,7 @@ local weather = lain.widget.weather({
         local descr = weather_now["weather"][1]["main"]:lower()
         local icon = icons[descr] or "⛅"
         local units = math.floor(weather_now["main"]["temp"])
-        widget:set_markup(lain.util.markup.fontfg(theme.font, theme.fg_normal, icon .. " " .. units .. "°C"))
+        widget:set_markup(lain.util.markup.fontfg(theme.font, theme.fg_normal, icon .. "  " .. units .. "°C"))
     end
 })
 weather.widget.forced_width = dpi(50)
@@ -105,7 +105,7 @@ keyboardlayout.widget.align = "center"
 local keyboardwidget = wibox.container.margin(wibox.container.background(keyboardlayout, theme.bg_focus, gears.shape.rectangle), dpi(0), dpi(0), dpi(5), dpi(5))
 
 -- Camera monitor
-local cameramon = wibox.widget.textbox()
+local cameramon = wibox.widget.textbox('📸')
 local cameramonwidget = wibox.container.margin(wibox.container.background(cameramon, theme.bg_focus, gears.shape.rectangle), dpi(0), dpi(0), dpi(5), dpi(5))
 
 cameramon.show_processes = function()
@@ -129,12 +129,7 @@ end
 
 awful.spawn.with_line_callback("devmon /dev/video0", 
     { stdout = function(line)
-        if line ~= '' then
-            cameramon.text = '📷'
-        else
-            cameramon.text = ''
-        end
-
+        cameramon.visible = line ~= ''
         cameramon.processes = line
     end
     })

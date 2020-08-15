@@ -1,6 +1,7 @@
 local gears = require("gears")
 local awful = require("awful")
 local hotkeys_popup = require("awful.hotkeys_popup")
+local naughty = require("naughty")
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
@@ -12,12 +13,37 @@ local bindings = {
     buttons = {}
 }
 
+local volume_notification = {}
+function notify_volume()
+    awful.spawn.easy_async("pa_getvolume", function(stdout, stderr, reason, exit_code)
+        local icon = "🔈"
+        local level = tonumber(stdout)
+        if level < 33 then
+            icon = "🔈"
+        elseif level < 66 then
+            icon = "🔉"
+        else
+            icon = "🔊"
+        end
+
+        local text = icon .. " " .. level
+        if volume_notification.shown then
+            naughty.replace_text(volume_notification.obj, nil, text)
+            naughty.reset_timeout(volume_notification.obj, 5)
+        else
+            volume_notification.obj = naughty.notify({ title = nil, text = text, position = "top_left", destroy = function() volume_notification.shown = false end })
+            volume_notification.shown = true
+        end
+    end)
+end
+
+
 bindings.keys.global = gears.table.join(
     -- System
     awful.key({ modkey }, "F1",
     function()
-        awful.spawn("systemctl suspend")
-    end, { description = "suspend", group = "system" }),
+        awful.spawn("powermenu")
+    end, { description = "Choose power action (sleep, hibernate, reboot, poweroff)", group = "system" }),
 
     awful.key({ modkey }, "s",
         hotkeys_popup.show_help, { description = "show help", group = "system" }),
@@ -30,17 +56,19 @@ bindings.keys.global = gears.table.join(
 
     awful.key({}, "XF86AudioRaiseVolume", 
     function()
-        awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ +5%")
+        awful.spawn("sh -c 'pactl set-sink-volume `pa_currentsink` +5%'")
+        notify_volume()  
     end, { description = "increase master volume", group = "system" }),
 
     awful.key({}, "XF86AudioLowerVolume",
     function()
-        awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ -5%")
+        awful.spawn("sh -c 'pactl set-sink-volume `pa_currentsink` -5%'")
+        notify_volume()
     end, { description = "decrease master volume", group = "system" }),
 
     awful.key({}, "XF86AudioMute",
     function()
-        awful.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle")
+        awful.spawn("sh -c 'pactl set-sink-mute `pa_currentsink` toggle'")
     end, { description = "toggle master mute", group = "system" }),
 
     -- Tag
@@ -136,7 +164,7 @@ bindings.keys.global = gears.table.join(
 
     awful.key({ modkey }, "d",
     function()
-        awful.spawn("thunar")
+        awful.spawn("rofi -modi file-browser -show file-browser -matching fuzzy")
     end, { description = "open file manager", group = "programs" }),
 
     awful.key({ modkey }, "F5",
@@ -239,7 +267,7 @@ bindings.keys.client = gears.table.join(
         c:raise()
     end, { description = "(un)maximize horizontally", group = "client" }),
 
-    awful.key({ modkey }, "#61", -- slash
+    awful.key({ modkey }, "]",
     function(c)
         c:move_to_screen(c.screen.index + 1)
     end, { description = "move client to the other screen", group = "client" })
