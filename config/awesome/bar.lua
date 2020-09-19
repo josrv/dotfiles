@@ -1,78 +1,82 @@
 local theme = require("theme")
 local gears = require("gears")
-local lain  = require("lain")
+local lain = require("lain")
 local awful = require("awful")
 local wibox = require("wibox")
-local dpi   = require("beautiful.xresources").apply_dpi
+local dpi = require("beautiful.xresources").apply_dpi
 local naughty = require("naughty")
-
-local colors = require("beautiful.xresources").get_current_theme()
+local base = require("wibox.widget.base")
+local tasklist = require("tasklist")
 local markup = lain.util.markup
-local my_table = awful.util.table or gears.table -- 4.{0,1} compatibility
-local blue   = "#80CCE6"
 local space3 = markup.font("Roboto 3", " ")
 
 local bar = {}
 
+local bar_widget = function(widget)
+    return wibox.container.margin(widget, dpi(5), dpi(5), dpi(5), dpi(5))
+end
+
 -- Clock
-local mytextclock = wibox.widget.textclock("🕑 %H:%M ")
-mytextclock.font = theme.font
-mytextclock.forced_width = dpi(55)
-mytextclock.align = "center"
-local clockbg = wibox.container.background(mytextclock, theme.bg_focus, gears.shape.rectangle)
-local clockwidget = wibox.container.margin(clockbg, dpi(0), dpi(3), dpi(5), dpi(5))
+local clock = wibox.widget.textclock("🕑 %H:%M ")
+clock.font = theme.font
+clock.forced_width = dpi(55)
+clock.align = "center"
+local clock_widget = bar_widget(clock)
 
 -- Calendar
-local mytextcalendar = wibox.widget.textclock("🗓️ %a %d %b")
-mytextcalendar.font = theme.font
-mytextcalendar.forced_width = dpi(80)
-mytextcalendar.align = "center"
-local calbg = wibox.container.background(mytextcalendar, theme.bg_focus, gears.shape.rectangle)
-local calendarwidget = wibox.container.margin(calbg, dpi(0), dpi(0), dpi(5), dpi(5))
+local calendar = wibox.widget.textclock("🗓️ %a %d %b")
+calendar.font = theme.font
+calendar.forced_width = dpi(80)
+calendar.align = "center"
+local calendar_widget = bar_widget(calendar)
 
-local cal = lain.widget.cal({
-    attach_to = { mytextclock, mytextcalendar },
-    notification_preset = {
-        fg = "#FFFFFF",
-        bg = theme.bg_normal,
-        position = "bottom_right",
-        font = "Monospace 10"
+-- Create calendar popup.
+lain.widget.cal(
+    {
+        attach_to = {clock, calendar},
+        notification_preset = {
+            fg = "#FFFFFF",
+            bg = theme.bg_normal,
+            position = "bottom_right",
+            font = "Monospace 10"
+        }
     }
-})
+)
 
 -- CPU
-local cpu_icon = wibox.widget.imagebox(theme.cpu)
-local cpu = lain.widget.cpu({
-    settings = function()
-        widget:set_markup("CPU " .. cpu_now.usage .. "%")
-    end
-})
-cpu.widget.forced_width = dpi(55) 
+local cpu =
+    lain.widget.cpu(
+    {
+        settings = function()
+            widget:set_markup("CPU " .. cpu_now.usage .. "%")
+        end
+    }
+)
+cpu.widget.forced_width = dpi(55)
 cpu.widget.font = theme.font
 cpu.widget.align = "center"
-local cpubg = wibox.container.background(cpu.widget, theme.bg_focus, gears.shape.rectangle)
-local cpuwidget = wibox.container.margin(cpubg, dpi(0), dpi(0), dpi(5), dpi(5))
+local cpu_widget = bar_widget(cpu.widget)
 
 -- Memory
-local memory = lain.widget.mem({
-    settings = function()
-        widget:set_markup(space3 .. markup.font(theme.font, "RAM " .. mem_now.perc .. "%"))
-    end
-})
-memory.widget.forced_width = dpi(55) 
+local memory =
+    lain.widget.mem(
+    {
+        settings = function()
+            widget:set_markup(space3 .. markup.font(theme.font, "RAM " .. mem_now.perc .. "%"))
+        end
+    }
+)
+memory.widget.forced_width = dpi(55)
 memory.widget.font = theme.font
 memory.widget.align = "center"
-local memorywidget = wibox.container.margin(
-    wibox.container.background(memory.widget, theme.bg_focus, gears.shape.rectangle), dpi(0), dpi(0), dpi(5), dpi(5)
-)
+local memory_widget = bar_widget(memory.widget)
 
 -- Systray
 local systray = wibox.widget.systray()
 systray:set_base_size(dpi(20))
-local systraywidget = wibox.container.margin(systray, dpi(0), dpi(4), dpi(6), dpi(4))
+local systray_widget = bar_widget(systray)
 
 -- Weather
-
 local icons = {
     clouds = "☁️",
     rain = "☔",
@@ -81,20 +85,23 @@ local icons = {
     thunderstorm = "🌩️"
 }
 
-local weather = lain.widget.weather({
-    city_id = 498817,
-    notification_preset = { font = "Monospace 9", position = "bottom_right" },
-    lang = "ru",
-    settings = function()
-        local descr = weather_now["weather"][1]["main"]:lower()
-        local icon = icons[descr] or "⛅"
-        local units = math.floor(weather_now["main"]["temp"])
-        widget:set_markup(lain.util.markup.fontfg(theme.font, theme.fg_normal, icon .. "  " .. units .. "°C"))
-    end
-})
+local weather =
+    lain.widget.weather(
+    {
+        city_id = 498817,
+        notification_preset = {font = "Monospace 9", position = "bottom_right"},
+        lang = "ru",
+        settings = function()
+            local descr = weather_now["weather"][1]["main"]:lower()
+            local icon = icons[descr] or "⛅"
+            local units = math.floor(weather_now["main"]["temp"])
+            widget:set_markup(lain.util.markup.fontfg(theme.font, theme.fg_normal, icon .. "  " .. units .. "°C"))
+        end
+    }
+)
 weather.widget.forced_width = dpi(50)
 weather.widget.align = "center"
-local weatherwidget = wibox.container.margin(wibox.container.background(weather.widget, theme.bg_focus, gears.shape.rectangle), dpi(0), dpi(0), dpi(5), dpi(5))
+local weather_widget = bar_widget(weather.widget)
 bar.weather = weather
 
 -- Keyboard layout
@@ -102,20 +109,21 @@ local keyboardlayout = awful.widget.keyboardlayout()
 keyboardlayout.widget.font = theme.font
 keyboardlayout.widget.forced_width = dpi(25)
 keyboardlayout.widget.align = "center"
-local keyboardwidget = wibox.container.margin(wibox.container.background(keyboardlayout, theme.bg_focus, gears.shape.rectangle), dpi(0), dpi(0), dpi(5), dpi(5))
+local keyboardlayout_widget = bar_widget(keyboardlayout)
 
 -- Camera monitor
-local cameramon = wibox.widget.textbox('📸')
-local cameramonwidget = wibox.container.margin(wibox.container.background(cameramon, theme.bg_focus, gears.shape.rectangle), dpi(0), dpi(0), dpi(5), dpi(5))
+local cameramon = wibox.widget.textbox("📸")
+local cameramon_widget = bar_widget(cameramon)
 
 cameramon.show_processes = function()
     cameramon.hide_processes()
 
     if cameramon.processes then
-        cameramon.process_list = naughty.notify {
+        cameramon.process_list =
+            naughty.notify {
             title = "List of processes using camera (/dev/video0)",
             text = cameramon.processes,
-            position = 'bottom_right',
+            position = "bottom_right",
             timeout = 0
         }
     end
@@ -127,101 +135,75 @@ cameramon.hide_processes = function()
     end
 end
 
-awful.spawn.with_line_callback("devmon /dev/video0", 
-    { stdout = function(line)
-        cameramon.visible = line ~= ''
-        cameramon.processes = line
-    end
-    })
+awful.spawn.with_line_callback(
+    "devmon /dev/video0",
+    {
+        stdout = function(line)
+            cameramon.visible = line ~= ""
+            cameramon.processes = line
+        end
+    }
+)
 
 cameramon:connect_signal("mouse::enter", cameramon.show_processes)
 cameramon:connect_signal("mouse::leave", cameramon.hide_processes)
 
--- Separators
-local first = wibox.widget.textbox('<span font="Roboto 7"> </span>')
-local spr_small = wibox.widget.imagebox(theme.spr_small)
-local spr_very_small = wibox.widget.imagebox(theme.spr_very_small)
-local spr_right = wibox.widget.imagebox(theme.spr_right)
-local spr_bottom_right = wibox.widget.imagebox(theme.spr_bottom_right)
-local spr_left = wibox.widget.imagebox(theme.spr_left)
-local bottom_bar = wibox.widget.imagebox(theme.bottom_bar)
-
-local barcolor  = gears.color({
-    type  = "linear",
-    from  = { dpi(32), 0 },
-    to    = { dpi(32), dpi(32) },
-    stops = { {0, theme.bg_focus}, {0.25, "#505050"}, {1, theme.bg_focus} }
-})
-
-
 function bar.create(s)
-    -- Create a layoutbox widget
-    s.mylayoutbox = awful.widget.layoutbox(s)
-    s.mylayoutbox:buttons(my_table.join(
-                           awful.button({}, 1, function () awful.layout.inc( 1) end),
-                           awful.button({}, 2, function () awful.layout.set( awful.layout.layouts[1] ) end),
-                           awful.button({}, 3, function () awful.layout.inc(-1) end),
-                           awful.button({}, 4, function () awful.layout.inc( 1) end),
-                           awful.button({}, 5, function () awful.layout.inc(-1) end)))
-
     -- Create a taglist widget
-    s.mytaglist = awful.widget.taglist(s, awful.widget.taglist.filter.all, awful.util.taglist_buttons, { bg_focus = barcolor })
-
-    mytaglistcont = wibox.container.background(s.mytaglist, theme.bg_focus, gears.shape.rectangle)
-    s.mytag = wibox.container.margin(mytaglistcont, dpi(0), dpi(0), dpi(5), dpi(5))
-
-    -- Create a tasklist widget
-    s.mytasklist = awful.widget.tasklist{
-        screen = s, 
-        filter = awful.widget.tasklist.filter.currenttags, 
-        buttons = awful.util.tasklist_buttons,
-        style = {
-            bg_focus = theme.bg_focus,
-            shape = gears.shape.rectangle,
-            shape_border_width = 5,
-            shape_border_color = theme.tasklist_bg_normal,
-            align = "center" 
-        },
+    s.taglist =
+        awful.widget.taglist {
+        screen = s,
+        filter = awful.widget.taglist.filter.all,
+        buttons = awful.util.taglist_buttons,
         layout = {
+            spacing = 3,
             layout = wibox.layout.fixed.horizontal
+        },
+        widget_template = {
+            {
+                {
+                    id = "icon_role",
+                    widget = wibox.widget.imagebox
+                },
+                margins = 2,
+                widget = wibox.container.margin
+            },
+            id = "background_role",
+            widget = wibox.container.background
         }
     }
 
+    s.taglist_widget = bar_widget(s.taglist)
+
+    -- Create a tasklist widget
+    s.tasklist_widget = tasklist(s)
+
     -- Create the bottom wibox
-    s.mybottomwibox = awful.wibar({ position = "bottom", screen = s, border_width = dpi(0), height = dpi(32) })
+    s.wibar = awful.wibar({position = "bottom", screen = s, border_width = dpi(0), height = dpi(28), ontop = false})
 
     -- Add widgets to the bottom wibox
-    s.mybottomwibox:setup {
+    s.wibar:setup {
         layout = wibox.layout.align.horizontal,
-        { -- Left widgets
+        {
+            -- Left widgets
             layout = wibox.layout.fixed.horizontal,
-            first,
-            s.mytag,
-            spr_small,
-            s.mylayoutbox,
-            spr_small,
-            s.mypromptbox
+            s.taglist_widget,
+            -- s.layoutbox,
+            s.promptbox
         },
-        s.mytasklist, -- Middle widget
-        { -- Right widgets
+        s.tasklist_widget, -- Middle widget
+        {
+            -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-            systraywidget,
-            spr_small,
-            cameramonwidget,
-            bottom_bar,
-            weatherwidget,
-            bottom_bar,
-            cpuwidget,
-            bottom_bar,
-            memorywidget,
-            bottom_bar,
-            keyboardwidget,
-            bottom_bar,
-            calendarwidget,
-            bottom_bar,
-            clock_icon,
-            clockwidget,
-        },
+            systray_widget,
+            cameramon_widget,
+            weather_widget,
+            cpu_widget,
+            memory_widget,
+            keyboardlayout_widget,
+            calendar_widget,
+            clock_widget
+        }
     }
 
     -- Assign bar to the screen.
@@ -229,4 +211,3 @@ function bar.create(s)
 end
 
 return bar
-
