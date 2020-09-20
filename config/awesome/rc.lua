@@ -94,7 +94,7 @@ awful.screen.connect_for_each_screen(
             {
                 layout = awful.layout.suit.tile,
                 screen = s,
-                icon = theme.icon_dir .. "/home.svg",
+                icon = theme.icon_dir .. "/home-3-line.svg",
                 icon_only = true,
                 selected = true
             }
@@ -104,7 +104,7 @@ awful.screen.connect_for_each_screen(
             {
                 layout = awful.layout.suit.max,
                 screen = s,
-                icon = theme.icon_dir .. "/chrome.svg",
+                icon = theme.icon_dir .. "/global-line.svg",
                 icon_only = true
             }
         )
@@ -113,7 +113,7 @@ awful.screen.connect_for_each_screen(
             {
                 layout = awful.layout.suit.max,
                 screen = s,
-                icon = theme.icon_dir .. "/code.svg",
+                icon = theme.icon_dir .. "/braces-line.svg",
                 icon_only = true
             }
         )
@@ -122,7 +122,7 @@ awful.screen.connect_for_each_screen(
             {
                 layout = awful.layout.suit.floating,
                 screen = s,
-                icon = theme.icon_dir .. "/message-square.svg",
+                icon = theme.icon_dir .. "/message-2-line.svg",
                 icon_only = true
             }
         )
@@ -131,7 +131,7 @@ awful.screen.connect_for_each_screen(
             {
                 layout = awful.layout.suit.tile,
                 screen = s,
-                icon = theme.icon_dir .. "/play-circle.svg",
+                icon = theme.icon_dir .. "/play-circle-line.svg",
                 icon_only = true
             }
         )
@@ -140,7 +140,7 @@ awful.screen.connect_for_each_screen(
             {
                 layout = awful.layout.suit.tile,
                 screen = s,
-                icon = theme.icon_dir .. "/grid.svg",
+                icon = theme.icon_dir .. "/dashboard-line.svg",
                 icon_only = true
             }
         )

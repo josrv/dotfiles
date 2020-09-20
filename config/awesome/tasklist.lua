@@ -59,7 +59,7 @@ local function build_layout()
         wibox.widget {
         id = "background_role",
         border_strategy = "inner",
-        widget = hoverable,
+        widget = wibox.container.background,
         {
             layout = wibox.layout.align.horizontal,
             {
@@ -89,7 +89,7 @@ local function build_layout()
                         margins = dpi(2),
                         {
                             widget = wibox.widget.imagebox,
-                            image = theme.icon_dir .. "/close.svg",
+                            image = theme.icon_dir .. "/close-line.svg",
                             opacity = 0.85
                         }
                     }
@@ -159,15 +159,16 @@ local function list_update(w, buttons, label, data, objects)
     end
 end
 
-return function(screen)
+return function(screen, filter)
+    local filter = filter or awful.widget.tasklist.filter.currenttags
     return awful.widget.tasklist {
         screen = screen,
-        filter = awful.widget.tasklist.filter.currenttags,
+        filter = filter,
         buttons = tasklist_buttons,
         update_function = list_update,
         layout = {
             layout = wibox.layout.flex.horizontal,
-            max_widget_size = 200
+            max_widget_size = theme.tasklist_task_size or 150
         }
     }
 end
