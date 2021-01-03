@@ -5,11 +5,11 @@ local beautiful = require("beautiful")
 local naughty = require("naughty")
 local lain = require("lain")
 local theme = require("theme")
-
 awful.util.shell = "sh"
-
 local bar = require("bar")
 local bindings = require("bindings")
+
+naughty.config.defaults.position = "bottom_right"
 
 --
 -- ERROR HANDLING
@@ -79,6 +79,21 @@ awful.util.scratchpad =
     end
 }
 
+-- Calculator
+awful.util.calculator =
+    lain.util.quake {
+    app = "qalculate-gtk",
+    name = "calculator",
+    argname = "--title %s",
+    height = 0.45,
+    width = 0.65,
+    horiz = "center",
+    followtag = true,
+    settings = function(c)
+        c.sticky = true
+    end
+}
+
 awful.screen.connect_for_each_screen(
     function(s)
         -- If wallpaper is a function, call it with the screen
@@ -108,24 +123,28 @@ awful.screen.connect_for_each_screen(
                 icon_only = true
             }
         )
-        awful.tag.add(
-            "IDE",
-            {
-                layout = awful.layout.suit.max,
-                screen = s,
-                icon = theme.icon_dir .. "/braces-line.svg",
-                icon_only = true
-            }
-        )
-        awful.tag.add(
-            "CHAT",
-            {
-                layout = awful.layout.suit.floating,
-                screen = s,
-                icon = theme.icon_dir .. "/message-2-line.svg",
-                icon_only = true
-            }
-        )
+        if s.index == 2 then
+            awful.tag.add(
+                "IDE",
+                {
+                    layout = awful.layout.suit.max,
+                    screen = s,
+                    icon = theme.icon_dir .. "/braces-line.svg",
+                    icon_only = true
+                }
+            )
+        end
+        if s.index == 1 then
+            awful.tag.add(
+                "CHAT",
+                {
+                    layout = awful.layout.suit.floating,
+                    screen = s,
+                    icon = theme.icon_dir .. "/message-2-line.svg",
+                    icon_only = true
+                }
+            )
+        end
         awful.tag.add(
             "MEDIA",
             {
@@ -151,6 +170,17 @@ awful.screen.connect_for_each_screen(
 --
 -- RULES
 --
+
+local dialog_rule = function(rule)
+    return {
+        rule = rule,
+        properties = {
+            floating = true,
+            focus = true,
+            placement = awful.placement.centered
+        }
+    }
+end
 
 awful.rules.rules = {
     -- All clients will match this rule.
@@ -179,10 +209,11 @@ awful.rules.rules = {
                 "Sxiv",
                 "Tor Browser",
                 "Telegram",
-                "mpv"
+                "mpv",
+                "Qalculate-gtk"
             },
             name = {
-                "Event Tester" -- xev.
+                "Event Tester", -- xev.
             },
             role = {
                 "AlarmWindow", -- Thunderbird's calendar.
@@ -194,6 +225,7 @@ awful.rules.rules = {
             class = "firefox",
             instance = "Devtools"
         },
+
         properties = {floating = true}
     },
     -- Disable titlebars.
@@ -212,40 +244,47 @@ awful.rules.rules = {
             placement = awful.placement.restore
         }
     },
-    -- Prompts.
-    {
-        rule = {
-            class = "Gcr-prompter" -- Gnome Keyring password prompt.
-        },
-        properties = {
-            floating = true,
-            focus = true,
-            placement = awful.placement.centered
-        }
-    },
+
+    -- Dialogs.
+   
+    -- GNOME Keyring password prompt.
+    dialog_rule { class = "Gcr-prompter" },
+
+    dialog_rule { class = "firefox", role = "Dialog" },
+
+    -- Evolution dialogs.
+    dialog_rule { class = "Evolution", name = " " },
+    dialog_rule { class = "Evolution", name = "Task.*" },
+    dialog_rule { class = "Evolution", name = "Meeting.*" },
+    dialog_rule { class = "Evolution", name = "Appointment.*" },
+    dialog_rule { class = "Evolution", name = "Reminders" },
+
+    -- File choosers.
+    dialog_rule { role = "GtkFileChooserDialog" },
+    dialog_rule { class = "TelegramDesktop", name = "Choose files" },
+    dialog_rule { class = "TelegramDesktop", name = "Save file" },
+    dialog_rule { class = "TelegramDesktop", name = "Choose an image" },
+    dialog_rule { class = "flameshot", name = "Save As" },
+    dialog_rule { class = "Xarchiver" },
+
     -- Tags.
     {
         rule = {class = "jetbrains-.*"},
         properties = {tag = "IDE", switchtotag = true}
     },
     {
-        rule = {class = "firefox"},
+        rule_any = {class = {"firefox", "chromium"}},
         properties = {tag = "WEB", switchtotag = true}
-    },
+   },
     {
         rule = {class = "Telegram"},
-        properties = {screen = 2, tag = "CHAT", switchtotag = true}
-    },
-    {
-        rule = {class = "mpv"},
-        properties = {tag = "MEDIA", switchtotag = true}
+        properties = {screen = 1, tag = "CHAT", switchtotag = true}
     },
     {
         rule = {class = "zoom"},
         properties = {tag = "MEDIA", switchtotag = true}
     }
 }
-
 -- Signal function to execute when a new client appears.
 client.connect_signal(
     "manage",

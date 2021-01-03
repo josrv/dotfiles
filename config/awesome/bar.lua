@@ -15,9 +15,9 @@ local bar = {}
 local bar_icon = function(icon_path)
     return wibox.widget {
         widget = wibox.container.margin,
-        left = dpi(2),
-        right = dpi(5),
-        top = dpi(3),
+        left = dpi(3),
+        right = dpi(4),
+        top = dpi(2),
         bottom = dpi(2),
         {
             id = "icon_role",
@@ -50,7 +50,7 @@ clock.font = theme.font
 local clock_widget = bar_widget(clock, theme.icon_dir .. "/time-line.svg")
 
 -- Calendar
-local calendar = wibox.widget.textclock("%a %d %b")
+local calendar = awful.widget.watch('date +"%a %d %b"', 60)
 calendar.font = theme.font
 -- calendar.forced_width = dpi(70)
 local calendar_widget = bar_widget(calendar, theme.icon_dir .. "/calendar-line.svg")
@@ -81,6 +81,18 @@ cpu.widget.forced_width = dpi(30)
 cpu.widget.font = theme.font
 local cpu_widget = bar_widget(cpu.widget, theme.icon_dir .. "/cpu-line.svg")
 
+-- CPU temperature
+local cpu_temp = lain.widget.temp {
+    timeout = 5,
+    tempfile = "/sys/devices/virtual/thermal/thermal_zone2/temp",
+    settings = function()
+        widget:set_markup(math.floor(coretemp_now + 0.5) .. "℃")
+    end
+}
+cpu_temp.widget.forced_width = dpi(30)
+cpu_temp.widget.font = theme.font
+local cpu_temp_widget = bar_widget(cpu_temp.widget, theme.icon_dir .. "/temp-hot-line.svg")
+
 -- Memory
 local memory =
     lain.widget.mem(
@@ -105,7 +117,8 @@ local icons = {
     rain = theme.icon_dir .. "/showers-line.svg",
     snow = theme.icon_dir .. "/snowy-line.svg",
     clear = theme.icon_dir .. "/sun-line.svg",
-    thunderstorm = theme.icon_dir .. "/thunderstorms-line.svg"
+    thunderstorm = theme.icon_dir .. "/thunderstorms-line.svg",
+    mist = theme.icon_dir .. "/mist-line.svg"
 }
 
 local weather_icon = bar_icon(theme.icon_dir .. "/question-line.svg")
@@ -119,7 +132,7 @@ local weather =
             local descr = weather_now["weather"][1]["main"]:lower()
             local icon = icons[descr] or theme.icon_dir .. "/question-line.svg"
             local units = math.floor(weather_now["main"]["temp"])
-            widget:set_markup(lain.util.markup.fontfg(theme.font, theme.fg_normal, units .. "°C"))
+            widget:set_markup(lain.util.markup.fontfg(theme.font, theme.fg_normal, units .. "℃"))
             weather_icon:get_children_by_id("icon_role")[1]:set_image(icon)
         end
     }
@@ -136,46 +149,9 @@ bar.weather = weather
 
 -- Keyboard layout
 local keyboardlayout = awful.widget.keyboardlayout()
-keyboardlayout.widget.forced_width = dpi(20)
+keyboardlayout.widget.forced_width = dpi(30)
 keyboardlayout.widget.font = theme.font
 local keyboardlayout_widget = bar_widget(keyboardlayout, theme.icon_dir .. "/keyboard-box-line.svg")
-
--- Camera monitor
-local cameramon = wibox.widget.textbox("📸")
-local cameramon_widget = bar_widget(cameramon)
-
-cameramon.show_processes = function()
-    cameramon.hide_processes()
-
-    if cameramon.processes then
-        cameramon.process_list =
-            naughty.notify {
-            title = "List of processes using camera (/dev/video0)",
-            text = cameramon.processes,
-            position = "bottom_right",
-            timeout = 0
-        }
-    end
-end
-
-cameramon.hide_processes = function()
-    if cameramon.process_list then
-        naughty.destroy(cameramon.process_list)
-    end
-end
-
-awful.spawn.with_line_callback(
-    "devmon /dev/video0",
-    {
-        stdout = function(line)
-            cameramon.visible = line ~= ""
-            cameramon.processes = line
-        end
-    }
-)
-
-cameramon:connect_signal("mouse::enter", cameramon.show_processes)
-cameramon:connect_signal("mouse::leave", cameramon.hide_processes)
 
 local taglist_buttons =
     gears.table.join(
@@ -183,7 +159,7 @@ local taglist_buttons =
         {},
         1,
         function(t)
-            t:view_only()
+            --t:view_only()
         end
     ),
     awful.button(
@@ -236,7 +212,7 @@ function bar.create(s)
                             id = "icon_role",
                             widget = wibox.widget.imagebox
                         },
-                        margins = 9,
+                        margins = dpi(8),
                         widget = wibox.container.margin
                     },
                     {
@@ -283,9 +259,9 @@ function bar.create(s)
             -- Right widgets
             layout = wibox.layout.fixed.horizontal,
             systray_widget,
-            cameramon_widget,
             weather_widget,
             cpu_widget,
+            cpu_temp_widget,
             memory_widget,
             keyboardlayout_widget,
             calendar_widget,

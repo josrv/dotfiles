@@ -1,20 +1,17 @@
 * Configuration
 ** Base
-  #+BEGIN_SRC emacs-lisp
-    
-    (require 'cl) ; lisp extensions
-    
-    (setq custom-file "~/.emacs-custom.el") ; easy customization buffer will be saved here
-
-  #+END_SRC
+#+BEGIN_SRC emacs-lisp
+(require 'cl) ; lisp extensions
+; (setq custom-file "~/.emacs-custom.el") ; easy customization buffer will be saved here
+#+END_SRC
 Save backups to one directory
 #+BEGIN_SRC emacs-lisp
 (setq backup-directory-alist
-          `(("." . ,(concat user-emacs-directory "backups"))))
+  `(("." . ,(concat user-emacs-directory "backups"))))
 #+END_SRC
 ** Packages
 *** straight.el
-  #+begin_src emacs-lisp
+    #+begin_src emacs-lisp
 
   (defvar bootstrap-version)
   (let ((bootstrap-file
@@ -31,9 +28,9 @@ Save backups to one directory
 
   (setq straight-use-package-by-default t)
   (straight-use-package 'use-package)
-  #+end_src
+    #+end_src
 *** Packages 
-  #+begin_src emacs-lisp
+    #+begin_src emacs-lisp
   
     ; evil-mode
     (straight-use-package 'evil)
@@ -70,23 +67,13 @@ Save backups to one directory
       '((t . ivy--regex-fuzzy)))
     (setq ivy-initial-inputs-alist nil)
     
-    ; Ranger
-    (straight-use-package 'ranger)
-    (ranger-override-dired-mode t) 
-    (setq ranger-dont-show-binary t)
-    (setq ranger-show-hidden t)
-
-     #+end_src
-*** Magit  
-#+BEGIN_SRC emacs-lisp
-  (straight-use-package 'magit)
-#+END_SRC
+    #+end_src
 ** Look & feel   
 *** Gui customization
     #+begin_src emacs-lisp
   (straight-use-package 'solarized-theme)
   (load-theme 'solarized-light t)
-  (set-frame-font "JetBrains Mono 13")
+  (add-to-list 'default-frame-alist '(font . "JetBrains Mono 13"))
 
   (customize-set-variable 'inhibit-startup-screen t) ; no splash screen on start
   (menu-bar-mode -1)   ; no menu bar
@@ -143,7 +130,7 @@ Save backups to one directory
   (custom-theme-set-faces
     'user
     '(variable-pitch ((t (:family "Charis SIL"))))
-    '(fixed-pitch ((t ( :family "Fira Mono")))))
+    '(fixed-pitch ((t ( :family "JetBrains Mono")))))
   (setq-default line-spacing 0)
 
   (straight-use-package 'org-bullets)

@@ -1,10 +1,34 @@
+# Setup Xresources.
 xrdb -merge -I$HOME ~/.Xresources
 
-setxkbmap -layout us,ru -option 'grp:win_space_toggle' -option 'caps:escape' -option 'compose:menu'
+# Configure keyboard.
 xmodmap -e "clear Lock"
-xset r rate 200 40
+xset r rate 200 80
 
-xrandr --output HDMI-0 --auto --output DP-0 --auto --left-of HDMI-0
+# Configure displays.
+# xrandr --output HDMI-0 --auto --output DP-0 --auto --left-of HDMI-0
 
-pasystray &
+# Run PulseAudio system tray.
+if command -v pasystray >/dev/null; then
+    pasystray &
+fi
 
+# Run volume level notifier.
+if command -v listenvol >/dev/null 2>&1 && command -v xob >/dev/null 2>&1; then
+    listenvol | xob >/dev/null &
+fi
+
+# Run compositor.
+picom -b
+
+# Run tray notifications.
+#if command -v tray-status >/dev/null; then
+  # Wireguard connection.
+  #tray-status "Wireguard" "status-wg" "security-high" &
+
+  # Camera monitor.
+  # tray-status "Camera is being used" "status-device /dev/video0" "camera-photo" &
+#fi
+
+# Run mail sync.
+#mail-sync &

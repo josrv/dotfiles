@@ -6,12 +6,12 @@ if !has('gui_running')
 endif
 
 let mapleader = "<alt>"
-set tabstop=4
-set shiftwidth=4
+set tabstop=2
+set shiftwidth=2
 set hidden
 set expandtab
 set laststatus=2
-set textwidth=120
+" set textwidth=120
 set undodir=~/.local/share/vimundo
 
 set undofile
@@ -24,17 +24,8 @@ set showcmd
 " disable mode label
 set noshowmode
 
-" highlight column
-" set colorcolumn=+1
-" :highlight ColorColumn ctermbg=DarkBlue guibg=DarkBlue
-
-" Plugin configs
-let g:lightline = {
-      \ 'active': {
-      \   'left': [ ['mode'] ]
-      \ },
-      \ 'colorscheme': 'wombat',
-      \ }
+" Use system clipboard
+set clipboard+=unnamedplus
 
 " Custom bindings
 map <C-N> :noh<cr>

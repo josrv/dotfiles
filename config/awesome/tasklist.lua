@@ -1,58 +1,7 @@
 local theme = require("theme")
-local gears = require("gears")
-local lain = require("lain")
 local awful = require("awful")
 local wibox = require("wibox")
 local dpi = require("beautiful.xresources").apply_dpi
-
-local function hoverable(widget)
-    local container =
-        wibox.widget {
-        widget,
-        widget = wibox.container.background
-    }
-    local previous_bg
-    container:connect_signal(
-        "mouse::enter",
-        function()
-            previous_bg = container.bg
-            container.bg = "#ffffff11"
-        end
-    )
-
-    container:connect_signal(
-        "mouse::leave",
-        function()
-            container.bg = previous_bg
-        end
-    )
-
-    return container
-end
-
-local tasklist_buttons =
-    awful.util.table.join(
-    awful.button(
-        {},
-        1,
-        function(c)
-            if c == client.focus then
-                c.minimized = true
-            else
-                -- Without this, the following
-                -- :isvisible() makes no sense
-                c.minimized = false
-                if not c:isvisible() and c.first_tag then
-                    c.first_tag:view_only()
-                end
-                -- This will also un-minimize
-                -- the client, if needed
-                client.focus = c
-                c:raise()
-            end
-        end
-    )
-)
 
 local function build_layout()
     local l =
@@ -76,24 +25,6 @@ local function build_layout()
                 left = dpi(4),
                 right = dpi(4),
                 {id = "text_role", widget = wibox.widget.textbox}
-            },
-            {
-                layout = wibox.container.margin,
-                margins = dpi(6),
-                {
-                    id = "close_button",
-                    widget = hoverable,
-                    shape = gears.shape.circle,
-                    {
-                        widget = wibox.container.margin,
-                        margins = dpi(2),
-                        {
-                            widget = wibox.widget.imagebox,
-                            image = theme.icon_dir .. "/close-line.svg",
-                            opacity = 0.85
-                        }
-                    }
-                }
             }
         }
     }
@@ -115,26 +46,25 @@ local function list_update(w, buttons, label, data, objects)
         if not layout then
             layout = build_layout()
 
-            layout.root:buttons(awful.widget.common.create_buttons(buttons, client))
+            layout.bgb:buttons(awful.widget.common.create_buttons(buttons, client))
 
-            layout.root:get_children_by_id("close_button")[1]:buttons(
-                gears.table.join(
-                    awful.button(
-                        {},
-                        1,
-                        nil,
-                        function()
-                            client.kill(client)
-                        end
-                    )
-                )
-            )
+            layout.ib.client = client
+
+            layout.tooltip = awful.tooltip {
+                objects = {layout.root}
+            }
+            layout.root:connect_signal("mouse:enter", function()
+                layout.tooltip.visible = true
+            end)
+
+            layout.root:connect_signal("mouse:leave", function()
+                layout.tooltip.visible = false
+            end)
 
             data[client] = layout
         end
 
-        local text, bg, bg_image, icon, item_args = label(client, layout.tb)
-        item_args = item_args or {}
+        local text, bg, bg_image = label(client, layout.tb)
 
         if layout.tbm and (text == nil or text == "") then
             layout.tbm:set_margins(0)
@@ -147,24 +77,16 @@ local function list_update(w, buttons, label, data, objects)
         layout.bgb:set_bg(bg)
         layout.bgb:set_bgimage(bg_image)
 
-        layout.bgb.shape = item_args.shape
-        layout.bgb.border_width = item_args.shape_border_width
-        layout.bgb.border_color = item_args.shape_border_color
-
-        if client then
-            layout.ib.client = client
-        end
+        layout.tooltip.markup = text
 
         w:add(layout.root)
     end
 end
 
 return function(screen, filter)
-    local filter = filter or awful.widget.tasklist.filter.currenttags
     return awful.widget.tasklist {
         screen = screen,
-        filter = filter,
-        buttons = tasklist_buttons,
+        filter = filter or awful.widget.tasklist.filter.currenttags,
         update_function = list_update,
         layout = {
             layout = wibox.layout.flex.horizontal,

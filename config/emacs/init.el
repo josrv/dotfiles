@@ -24,10 +24,10 @@
 ;;(mapc #'org-babel-load-file (directory-files dotfiles-dir t "\\.org$"))
 
 ;; follow git-controlled symlinks
-(setq vc-follow-symlinks t)
+;;(setq vc-follow-symlinks t)
 
 ;; load config
-(org-babel-load-file "~/.config/emacs/config.org")
+(org-babel-load-file (expand-file-name "config.org" user-emacs-directory))
 
 ;;; init.el ends here
 

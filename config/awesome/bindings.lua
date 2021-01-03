@@ -1,7 +1,7 @@
 local gears = require("gears")
 local awful = require("awful")
-local hotkeys_popup = require("awful.hotkeys_popup")
 local naughty = require("naughty")
+local hotkeys_popup = require("awful.hotkeys_popup")
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
@@ -39,7 +39,6 @@ bindings.keys.global =
         {},
         "XF86AudioLowerVolume",
         function()
-            --awful.spawn("pa_setvolume -5%")
             awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ -5%")
         end,
         {description = "decrease master volume", group = "system"}
@@ -52,21 +51,25 @@ bindings.keys.global =
         end,
         {description = "toggle master mute", group = "system"}
     ),
+    awful.key(
+        {modkey},
+        "o",
+        function()
+          awful.spawn("nmtoggle wg")
+        end,
+        {description = "Toggle Wireguard connection", group = "system"}
+    ),
+    awful.key(
+        {modkey},
+        "-",
+        function()
+          awful.spawn("xkill")
+        end,
+        {description = "Select a window to kill", group = "system"}
+    ),
     -- Tag
     awful.key({modkey}, "Left", awful.tag.viewprev, {description = "view previous", group = "tag"}),
     awful.key({modkey}, "Right", awful.tag.viewnext, {description = "view next", group = "tag"}),
-    awful.key(
-        {modkey},
-        "Tab",
-        function()
-            if awful.last_focused_client then
-                local screen = awful.last_focused_client.screen
-                awful.last_focused_client:emit_signal("request::activate", "Switch to previous", {raise = true})
-                awful.screen.focus(screen)
-            end
-        end,
-        {description = "go back", group = "tag"}
-    ),
     -- Client
     awful.key(
         {modkey},
@@ -100,7 +103,12 @@ bindings.keys.global =
         end,
         {description = "swap with previous client by index", group = "client"}
     ),
-    awful.key({modkey}, "u", awful.client.urgent.jumpto, {description = "jump to urgent client", group = "client"}),
+    awful.key(
+        {modkey},
+        "u",
+        awful.client.urgent.jumpto,
+        {description = "jump to urgent client", group = "client"}
+    ),
     awful.key(
         {modkey, "Control"},
         "n",
@@ -115,33 +123,17 @@ bindings.keys.global =
     ),
     -- Screen
     awful.key(
-        {modkey, "Control"},
-        "j",
+        {modkey},
+        "Tab",
         function()
             awful.screen.focus_relative(1)
         end,
         {description = "focus the next screen", group = "screen"}
     ),
-    awful.key(
-        {modkey, "Control"},
-        "k",
-        function()
-            awful.screen.focus_relative(-1)
-        end,
-        {description = "focus the previous screen", group = "screen"}
-    ),
     -- Programs
     awful.key(
         {modkey},
         "p",
-        function()
-            awful.spawn("rofilaunch")
-        end,
-        {description = "launch application or command", group = "programs"}
-    ),
-    awful.key(
-        {},
-        "#135",
         function()
             awful.spawn("rofilaunch")
         end,
@@ -175,9 +167,29 @@ bindings.keys.global =
         {modkey},
         "y",
         function()
-            awful.spawn("chromium")
+            awful.spawn("firefox")
         end,
         {description = "open web browser", group = "programs"}
+    ),
+    awful.key(
+        {modkey},
+        "e",
+        function()
+            awful.spawn("emacsclient -cn")
+        end,
+        {description = "open Emacs", group = "programs"}
+    ),
+    awful.key(
+        {modkey, "Shift"},
+        "e",
+        function()
+            awful.spawn("systemctl --user restart emacs", true,
+              function()
+                naughty.notify({ title = "Emacs restarted"})
+              end
+            )
+        end,
+        {description = "restart Emacs", group = "programs"}
     ),
     awful.key(
         {modkey},
@@ -188,20 +200,12 @@ bindings.keys.global =
         {description = "open file manager", group = "programs"}
     ),
     awful.key(
-        {modkey},
-        "F5",
+        {},
+        "Print",
         function()
             awful.spawn("screenshot")
         end,
-        {description = "make screenshot (to clipboard)", group = "programs"}
-    ),
-    awful.key(
-        {modkey, "Shift"},
-        "F5",
-        function()
-            awful.spawn("screenshot file")
-        end,
-        {description = "make screenshot (to file)", group = "programs"}
+        {description = "make screenshot", group = "programs"}
     ),
     awful.key(
         {modkey, "Shift"},
@@ -213,19 +217,19 @@ bindings.keys.global =
     ),
     awful.key(
         {modkey},
-        "c",
-        function()
-            awful.spawn('rofi -modi "clipboard:greenclip print" -show clipboard')
-        end,
-        {description = "select from clipboard manager", group = "programs"}
-    ),
-    awful.key(
-        {modkey},
         ".",
         function()
             awful.util.scratchpad:toggle()
         end,
         {description = "open scratchpad terminal", group = "programs"}
+    ),
+    awful.key(
+        {modkey},
+        "[",
+        function()
+            awful.util.calculator:toggle()
+        end,
+        {description = "open calculator", group = "programs"}
     ),
     awful.key(
         {modkey},
@@ -275,6 +279,14 @@ bindings.keys.global =
             awful.tag.incnmaster(-1, nil, true)
         end,
         {description = "decrease the number of master clients", group = "layout"}
+    ),
+    awful.key(
+        {modkey},
+        "m",
+        function()
+            awful.spawn.with_shell("mail-sync")
+        end,
+        {description = "sync mail", group = "programs"}
     )
 )
 
@@ -323,7 +335,7 @@ bindings.keys.client =
         {description = "minimize", group = "client"}
     ),
     awful.key(
-        {modkey},
+        {modkey, "Shift"},
         "m",
         function(c)
             c.maximized = not c.maximized
@@ -332,26 +344,8 @@ bindings.keys.client =
         {description = "(un)maximize", group = "client"}
     ),
     awful.key(
-        {modkey, "Control"},
-        "m",
-        function(c)
-            c.maximized_vertical = not c.maximized_vertical
-            c:raise()
-        end,
-        {description = "(un)maximize vertically", group = "client"}
-    ),
-    awful.key(
         {modkey, "Shift"},
-        "m",
-        function(c)
-            c.maximized_horizontal = not c.maximized_horizontal
-            c:raise()
-        end,
-        {description = "(un)maximize horizontally", group = "client"}
-    ),
-    awful.key(
-        {modkey},
-        "]",
+        "Tab",
         function(c)
             c:move_to_screen(c.screen.index + 1)
         end,

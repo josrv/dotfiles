@@ -1,3 +1,4 @@
+Xft.dpi: 117
 Xft.antialias: true
 
 ! Base16 OneDark Theme
@@ -60,7 +61,7 @@ XTerm*selectToClipboard: true
 
 ! --- ROFI --- !
 
-rofi.font:		JetBrains Mono 14
+rofi.font:		monospace 14
 rofi.bw:		2
 
 rofi.color-enabled: 	true
