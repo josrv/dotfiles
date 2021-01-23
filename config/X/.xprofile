@@ -5,8 +5,8 @@ xrdb -merge -I$HOME ~/.Xresources
 xmodmap -e "clear Lock"
 xset r rate 200 80
 
-# Configure displays.
-# xrandr --output HDMI-0 --auto --output DP-0 --auto --left-of HDMI-0
+# Configure pointer speed.
+xinput --set-prop "USB-HID Keyboard Mouse" "Coordinate Transformation Matrix" 2, 0, 0, 0, 2, 0, 0, 0, 1
 
 # Run PulseAudio system tray.
 if command -v pasystray >/dev/null; then
@@ -21,14 +21,5 @@ fi
 # Run compositor.
 picom -b
 
-# Run tray notifications.
-#if command -v tray-status >/dev/null; then
-  # Wireguard connection.
-  #tray-status "Wireguard" "status-wg" "security-high" &
-
-  # Camera monitor.
-  # tray-status "Camera is being used" "status-device /dev/video0" "camera-photo" &
-#fi
-
-# Run mail sync.
-#mail-sync &
+# Show summary.
+summary &

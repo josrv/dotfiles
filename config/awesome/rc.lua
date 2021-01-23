@@ -8,6 +8,7 @@ local theme = require("theme")
 awful.util.shell = "sh"
 local bar = require("bar")
 local bindings = require("bindings")
+local wibox = require("wibox")
 
 naughty.config.defaults.position = "bottom_right"
 
@@ -350,3 +351,24 @@ client.connect_signal(
         -- end
     end
 )
+
+summary_popup = function()
+    return {
+        awful.popup {
+    widget = {
+        {
+            {
+                text   = 'foobar',
+                widget = wibox.widget.textbox
+            },
+            layout = wibox.layout.fixed.vertical,
+        },
+        margins = 10,
+        widget  = wibox.container.margin
+    },
+    placement    = awful.placement.bottom_right,
+    visible      = true,
+    ontop        = true
+}
+    }
+end

@@ -17,6 +17,12 @@ user_pref("media.ffmpeg.vaapi.enabled", "true");
 user_pref("media.ffvpx.enabled", "false");
 user_pref("media.av1.enabled", "false");
 
+// Disable WebRTC audio post processing.
+user_pref("media.getusermedia.aec_enabled", "false");
+user_pref("media.getusermedia.agc_enabled", "false");
+user_pref("media.getusermedia.noise_enabled", "false");
+user_pref("media.getusermedia.hpf_enabled", "false");
+
 // Behaviour
 user_pref("general.warnOnAboutConfig", false);
 user_pref("browser.warnOnQuit", false);

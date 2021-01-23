@@ -27,11 +27,14 @@ set -gx VDPAU_DRIVER radeonsi
 
 set -gx MOZ_X11_EGL 1
 
+set -gx BC_ENV_ARGS "$XDG_CONFIG_HOME/bc/bcrc"
+
 ## Cursor shape
 set fish_cursor_default block
 set fish_cursor_insert line
 set fish_cursor_replace_one underscore
 set fish_cursor_visual block
+
 
 ## Disable mode indicator
 function fish_mode_prompt; end

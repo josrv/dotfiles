@@ -143,13 +143,13 @@ local weather_container =
     weather_icon,
     weather
 }
-weather.widget.forced_width = dpi(30)
+weather.widget.forced_width = dpi(35)
 local weather_widget = bar_widget(weather_container)
 bar.weather = weather
 
 -- Keyboard layout
 local keyboardlayout = awful.widget.keyboardlayout()
-keyboardlayout.widget.forced_width = dpi(30)
+keyboardlayout.widget.forced_width = dpi(20)
 keyboardlayout.widget.font = theme.font
 local keyboardlayout_widget = bar_widget(keyboardlayout, theme.icon_dir .. "/keyboard-box-line.svg")
 

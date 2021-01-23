@@ -284,7 +284,7 @@ bindings.keys.global =
         {modkey},
         "m",
         function()
-            awful.spawn.with_shell("mail-sync")
+            awful.spawn.with_shell("summary")
         end,
         {description = "sync mail", group = "programs"}
     )
