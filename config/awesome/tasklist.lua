@@ -16,21 +16,14 @@ local function build_layout()
                 widget = wibox.container.margin,
                 left = dpi(3),
                 top = dpi(3),
+                right = dpi(3),
                 bottom = dpi(3),
                 {id = "icon_role", widget = awful.widget.clienticon}
-            },
-            {
-                id = "text_margin_role",
-                widget = wibox.container.margin,
-                left = dpi(4),
-                right = dpi(4),
-                {id = "text_role", widget = wibox.widget.textbox}
             }
         }
     }
     return {
         ib = l:get_children_by_id("icon_role")[1],
-        tb = l:get_children_by_id("text_role")[1],
         bgb = l:get_children_by_id("background_role")[1],
         tbm = l:get_children_by_id("text_margin_role")[1],
         ibm = l:get_children_by_id("icon_margin_role")[1],
