@@ -28,6 +28,7 @@ set -gx VDPAU_DRIVER radeonsi
 set -gx MOZ_X11_EGL 1
 
 set -gx BC_ENV_ARGS "$XDG_CONFIG_HOME/bc/bcrc"
+set -gx JAVA_HOME "/usr/lib/jvm/java-12-j9"
 
 ## Cursor shape
 set fish_cursor_default block
