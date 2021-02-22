@@ -3,20 +3,47 @@
 
 # Read systemd service names from stdin, choose one using rofi and toggle its state.
 
-set -u
-set -e
-set -o pipefail
+# set -u
+# set -e
+# set -o pipefail
+#set -x 
 
-# Display services and choose one with Rofi.
-service=$(cat | xargs -n1 -I{} sh -c 'echo `systemctl is-active {}` {}' | sort -k1 | rofi -dmenu -p "service" -matching fuzzy)
+msg="<b>Enter</b>: on/off | <b>Alt+r</b>: restart"
 
-IFS=' ' read state name <<<"$service"
+awkscript=$(cat <<EOF
+{
+  getstatus = "systemctl is-active "\$1""  
+  getstatus | getline status                    
+  close(getstatus)                            
+  if (status == "active") {
+    status = "✅"
+  } else {
+    status = "🔳"
+  }
+  print status, \$1, \$2
+}
+EOF
+)
+
+echo "$awkscript"
+service=$(cat | awk "$awkscript" | rofi -dmenu -p "service" -matching fuzzy -mesg "$msg" -kb-custom-1 "alt+r")
+
+test "$service" != "" || exit
+
+IFS=' ' read -r state name sudo <<<"$service"
+
+control_command=$(test "$sudo" == "sudo" && echo "sudo -A systemctl" || echo "systemctl")
 
 # Use custom sudo askpass program.
 export SUDO_ASKPASS="/usr/bin/rofiaskpass"
 
-# Toggle chosen service state.
-[[ $state == 'active' ]] && sudo -A systemctl stop $name || sudo -A systemctl start $name
+if [[ $? == "10" ]]; then
+  # Restart.
+  eval "$control_command" restart "$name"
+else
+  # Toggle chosen service state.
+  [[ "$state" == '✅' ]] && eval "$control_command" stop "$name" || eval "$control_command" start "$name"
+fi
 
 # Send notification.
 notify-send "$name is now $(systemctl is-active $name)"

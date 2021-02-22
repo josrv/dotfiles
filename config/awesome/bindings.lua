@@ -193,6 +193,22 @@ bindings.keys.global =
     ),
     awful.key(
         {modkey},
+        "a",
+        function()
+            awful.spawn("lastsms")
+        end,
+        {description = "Type last received SMS OTP code", group = "programs"}
+    ),
+    awful.key(
+        {modkey, "Shift"},
+        "a",
+        function()
+            awful.spawn("lastsms --notify")
+        end,
+        {description = "Show last SMS", group = "programs"}
+    ),
+    awful.key(
+        {modkey},
         "d",
         function()
             awful.spawn("rofi -modi file-browser -show file-browser -matching fuzzy")

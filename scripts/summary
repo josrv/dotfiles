@@ -1,0 +1,23 @@
+#!/bin/sh
+
+mail-sync
+
+# Get upcoming events.
+EVENTS=$(upcoming-events)
+
+# Get unread messages.
+WORK_MESSAGES=$(notmuch search --limit=10 --format=json "tag:work and tag:unread and tag:inbox" | jq -r '.[].subject[0:80]')
+PERSONAL_MESSAGES=$(notmuch search --limit=10 --format=json "tag:personal and tag:unread and tag:inbox" | jq -r '.[].subject[0:80]')
+
+MESSAGE="
+<b>Предстоящие события</b>
+$EVENTS
+
+<b>Новые сообщения (personal)</b>
+$PERSONAL_MESSAGES
+
+<b>Новые сообщения (work)</b>
+$WORK_MESSAGES
+"
+
+notify-send -t 100000 -u normal -i "$(icon mail-unread-new)" "Summary" "$MESSAGE"

@@ -1,0 +1,29 @@
+#!/bin/bash
+
+DOMAIN_LIST_FILE=~/.local/share/domains
+
+if echo "$1" | grep -q '^https\?:\/\/'; then
+    matching=0
+    host=$(echo "$1" | sed -e 's/[^/]*\/\/\([^@]*@\)\?\([^:/]*\).*/\2/')
+    while read str method profile; do
+        if [[ $method == "host-contains" ]]; then
+            if [[ $host == *$str* ]]; then
+                matching=1
+                break
+            fi
+        elif [[ $method == "starts-with" ]]; then
+            if echo "$1" | grep -q "^https\?:\/\/$str"; then
+                matching=1
+                break
+            fi
+        fi
+
+    done < "$DOMAIN_LIST_FILE"
+
+    if [[ $matching -eq 1 ]]; then
+        /usr/bin/firefox -P $profile ${*}
+        exit 0
+    fi
+fi
+
+/usr/bin/firefox ${*}

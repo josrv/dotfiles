@@ -1,0 +1,21 @@
+#!/usr/bin/env python3
+
+# For the given icon name, find full icon path from the default GTK theme.
+
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
+import sys
+
+if len(sys.argv) < 2:
+    print("Usage: %s icon-name" % sys.argv[0])
+    exit(1)
+
+icon_name = sys.argv[1]
+icon_theme = Gtk.IconTheme.get_default()
+icon = icon_theme.lookup_icon(icon_name, 48, 0)
+if icon:
+    print(icon.get_filename())
+else:
+    print("No icon with the given name.", file=sys.stderr)
+    exit(1)

@@ -124,7 +124,7 @@ awful.screen.connect_for_each_screen(
                 icon_only = true
             }
         )
-        if s.index == 2 then
+        if s.index == 1 then
             awful.tag.add(
                 "IDE",
                 {
@@ -135,7 +135,7 @@ awful.screen.connect_for_each_screen(
                 }
             )
         end
-        if s.index == 1 then
+        if s.index == 2 then
             awful.tag.add(
                 "CHAT",
                 {
@@ -279,7 +279,7 @@ awful.rules.rules = {
    },
     {
         rule = {class = "Telegram"},
-        properties = {screen = 1, tag = "CHAT", switchtotag = true}
+        properties = {screen = 2, tag = "CHAT", switchtotag = true}
     },
     {
         rule = {class = "zoom"},

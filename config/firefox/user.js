@@ -58,9 +58,10 @@ user_pref("media.peerconnection.enabled", true);
 user_pref("media.peerconnection.ice.default_address_only", true);
 
 // Scrolling
-user_pref("mousewheel.min_line_scroll_amount", 20);
-user_pref("general.smoothScroll", false);
-user_pref("general.smoothScroll.pages", false);
+//user_pref("mousewheel.min_line_scroll_amount", 20);
+//user_pref("general.smoothScroll", false);
+user_pref("general.smoothScroll", true);
+//user_pref("general.smoothScroll.pages", false);
 user_pref("image.mem.min_discard_timeout_ms", 2100000000);
 user_pref("image.mem.max_decoded_image_kb", "512K");
 

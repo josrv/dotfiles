@@ -1,0 +1,18 @@
+#!/bin/sh
+
+ISSUE=$(jira list -q 'assignee in (currentUser()) AND sprint IN openSprints() AND status in ("Backlog", "Selected For Development", "In Progress", "In Review", "In Regression Testing", "In QA", "In Deployment") ORDER BY status ASC, updatedDate ASC' --template="custom-list" --queryfields="status,sprint" | fzf)
+
+if [ -z "$ISSUE" ]; then
+    echo "No issue selected"
+    exit 1
+fi
+
+KEY=$(echo $ISSUE | cut -d' ' -f1)
+TO_STATUS=$(echo -e "In Progress\nIn Regression Testing\nIn Deployment\nDone" | fzf --prompt "Target status for $KEY: ")
+if [ -z "$TO_STATUS" ]; then
+    echo "No status selected"
+    exit 1
+fi
+
+echo "Moving $KEY to $TO_STATUS."
+jira transition --noedit "$TO_STATUS" "$KEY"

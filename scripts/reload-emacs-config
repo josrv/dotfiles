@@ -1,0 +1,7 @@
+#!/bin/sh
+
+rm "$HOME/.emacs.d/config.el"
+systemctl --user restart emacs 
+notify-send -i $(icon "emacs") "Emacs config reloaded."
+emacsclient -cn
+

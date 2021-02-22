@@ -9,7 +9,7 @@ fi
 # Find a Windows Boot Manager entry in the efivars.
 WINDOWS_BOOT_ENTRY=$(efibootmgr | sed -rn 's/Boot([0-9]+).*Windows.*/\1/p')
 if [ -z "$WINDOWS_BOOT_ENTRY" ]; then
-    echo "Can't find a Windows Boot Manager entry (see efibootmgr)."
+    echo "Can't find a Windows Boot Manager entry (check efibootmgr)."
     exit 1
 fi
 
@@ -19,19 +19,8 @@ if [ -f /etc/systemd/sleep.conf ]; then
 fi
 printf "[Sleep]\nHibernateMode=reboot" > /etc/systemd/sleep.conf
 
-# Ensure that reboot-after-hibernation behaviour is removed after waking up.
-# This works by adding a post-hibernate hook that restores previous /etc/systemd/sleep.conf.
-cat >/usr/lib/systemd/system-sleep/disable-hibernate-reboot <<EOF
-#!/bin/bash
-
-if [ -f /etc/systemd/sleep.conf.bak ] && [ $1 == "post" ] && [ $2 == "hibernate" ]; then
-  mv /etc/systemd/sleep.conf.bak /etc/systemd/sleep.conf
-fi
-EOF
-chmod +x /usr/lib/systemd/system-sleep/disable-hibernate-reboot
-
 # Make Windows Boot Manager boot next.
-efibootmgr -q --bootnext "$WINDOWS_BOOT_ENTRY" || disable-hibernate-reboot
+efibootmgr -q --bootnext "$WINDOWS_BOOT_ENTRY" # || sh /usr/lib/systemd/system-sleep/disable-hibernate-reboot
 
 # Hibernate.
 systemctl hibernate

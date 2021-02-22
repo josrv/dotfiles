@@ -9,6 +9,7 @@ theme.font                                      = "Inter 9"
 theme.fg_normal                                 = "#FFFFFF"
 theme.bg_focus                                  = "#474747"
 theme.bg_normal                                 = "#242424"
+--theme.bg_normal                                 = "#0B0636"
 theme.fg_urgent                                 = "#CC9393"
 theme.bg_urgent                                 = "#006B8E"
 theme.border_width                              = dpi(1)

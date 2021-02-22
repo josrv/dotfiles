@@ -6,11 +6,7 @@ set -gx GOPATH $HOME/.local/share/go
 set -gx --path PATH $HOME/.local/bin $HOME/.scripts $HOME/projects/arrival/infra-console-tools/bin $GOPATH/bin $PATH
 
 set -gx XDG_CONFIG_HOME $HOME/.config
-set -gx XDG_CACHE_HOME $HOME/.cache
-set -gx XDG_DATA_HOME $HOME/.local/share
-set -gx LESSHISTFILE /dev/null
-set -gx NOTMUCH_CONFIG $XDG_CONFIG_HOME/notmuch-config
-set -gx K9SCONFIG $XDG_CONFIG_HOME/k9s
+set -gx XDG_CACHE_HOME $HOME/.cache set -gx XDG_DATA_HOME $HOME/.local/share set -gx LESSHISTFILE /dev/null set -gx NOTMUCH_CONFIG $XDG_CONFIG_HOME/notmuch-config set -gx K9SCONFIG $XDG_CONFIG_HOME/k9s
 # Entirely configuring the kubectl directory is not possible.
 # https://github.com/kubernetes/kubernetes/issues/78664
 # Setting KUBECONFIG is not enough: $HOME/.kube/cache is hardcoded.

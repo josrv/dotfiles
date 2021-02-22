@@ -1,6 +1,5 @@
 #!/bin/sh
 
-# Prompts user to select and install package(s) using AUR wrapper.
-
-PACKAGE=$(yay -Pc | fzf -m --preview 'yay -Si {1}' | cut -f1 -)
-yay -S $PACKAGE
+# Prompts user to select and uninstall package(s) using AUR wrapper.
+PACKAGE=$(yay -Pc | fzf -m --preview 'yay -Si {1}' | cut -f1 -) # Separate variable to allow confirming.
+yay -S "$PACKAGE" 

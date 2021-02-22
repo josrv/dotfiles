@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+MAILDIR=$HOME/mail
+
+# Strip UIDs from filenames when moving mails so that mbsync doesn't get confused.
+mv_renamed() {
+	while IFS= read -r name; do
+		flags=$(echo "$name" | cut -d':' -f2)
+		new_name="$(uuidgen):$flags"
+		mv -n "$name" "$(realpath "$1")/cur/$new_name"
+	done
+}
+
+# Remove deleted messages.
+notmuch search --output=files -- path:"personal/Inbox/**" and tag:deleted | xargs -r rm
+notmuch search --output=files -- path:"work/Inbox/**" and tag:deleted | xargs -r rm
+
+# Put archived messages to the Archive maildir folder.
+notmuch search --output=files -- path:"personal/Inbox/**" and not tag:inbox | mv_renamed ~/mail/personal/Archive
+notmuch search --output=files -- path:"work/Inbox/**" and not tag:inbox | mv_renamed ~/mail/work/Archive
+
+# Sync.
+mbsync -c ~/.config/isync/config -a
+
+# Reindex.
+notmuch new
+
+# Empty Bin.
+rm -r $MAILDIR/work/\[Gmail\]/Bin/{new,cur}/* 2>/dev/null
+
+# Tag inbox.
+notmuch tag +inbox +personal -- path:"personal/Inbox/**"
+notmuch tag +inbox +work -- path:"work/Inbox/**"

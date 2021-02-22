@@ -1,0 +1,11 @@
+#!/bin/bash
+
+DAYS=${1:-30}
+
+emacs -batch --eval="
+(org-batch-agenda-csv \"a\"
+ org-agenda-span $DAYS
+ org-agenda-files '(\"~/org/events.org\"))
+ " 2>/dev/null | while IFS=',' read -ra arr; do
+    printf "%-15s\t%s\n" "$(date -d "${arr[5]}" +'%a %d %b')" "${arr[1]}"
+done
