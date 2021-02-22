@@ -97,12 +97,11 @@ awful.util.calculator =
 
 awful.screen.connect_for_each_screen(
     function(s)
-        -- If wallpaper is a function, call it with the screen
-        local wallpaper = beautiful.wallpaper
-        if type(wallpaper) == "function" then
-            wallpaper = wallpaper(s)
-        end
-        gears.wallpaper.maximized(wallpaper, s, true)
+        --local wallpaper = beautiful.wallpaper
+        --if type(wallpaper) == "function" then
+        --    wallpaper = wallpaper(s)
+        --end
+        gears.wallpaper.maximized(beautiful.wallpapers[s.index], s, true)
 
         -- Tags
         awful.tag.add(

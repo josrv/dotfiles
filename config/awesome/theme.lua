@@ -4,7 +4,11 @@ local dpi   = require("beautiful.xresources").apply_dpi
 local theme                                     = {}
 theme.default_dir                               = require("awful.util").get_themes_dir() .. "default"
 theme.icon_dir                                  = os.getenv("HOME") .. "/.config/awesome/theme/icons"
-theme.wallpaper                                 = os.getenv("HOME") .. "/media/pictures/wall.jpg"
+theme.wallpapers                                = {
+                                                    os.getenv("HOME") .. "/media/pictures/wallpapers/wall1.jpg",
+                                                    os.getenv("HOME") .. "/media/pictures/wallpapers/wall2.jpg",
+                                                    os.getenv("HOME") .. "/media/pictures/wallpapers/wall3.jpg"
+                                                  }
 theme.font                                      = "Inter 9"
 theme.fg_normal                                 = "#FFFFFF"
 theme.bg_focus                                  = "#474747"
