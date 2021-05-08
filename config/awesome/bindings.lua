@@ -151,7 +151,7 @@ bindings.keys.global =
         {modkey},
         "Return",
         function()
-            awful.spawn("termite")
+            awful.spawn("alacritty")
         end,
         {description = "open terminal", group = "programs"}
     ),
@@ -219,7 +219,7 @@ bindings.keys.global =
         {},
         "Print",
         function()
-            awful.spawn("screenshot")
+            awful.spawn("flameshot gui")
         end,
         {description = "make screenshot", group = "programs"}
     ),

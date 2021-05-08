@@ -6,12 +6,15 @@ set -e
 set -o pipefail
 
 # Display services and choose one with Rofi.
-items="💤 Sleep\n🌀 Hibernate\n🎮 Reboot to Windows\n🔄 Reboot\n⏹️ Poweroff"
+items="🔓 Lock\n💤 Sleep\n🌀 Hibernate\n🎮 Reboot to Windows\n🔄 Reboot\n⏹️ Poweroff"
 
 # Choose an action.
 action=$(echo -e $items | rofi -dmenu -p "select action" -matching fuzzy -i)
 
 case $action in
+    *Lock)
+        light-locker-command -l
+        ;;
     *Sleep)
         sleep 0.25 && systemctl suspend
         ;;

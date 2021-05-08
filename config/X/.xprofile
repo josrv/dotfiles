@@ -19,7 +19,13 @@ if command -v listenvol >/dev/null 2>&1 && command -v xob >/dev/null 2>&1; then
 fi
 
 # Run compositor.
-picom -b
+# picom -b
+
+# Disable Alsa auto-mute (experimental)
+amixer -c 1 set 'Auto-Mute Mode' Disabled
 
 # Show summary.
-summary &
+#summary &
+
+# Start locker.
+light-locker --late-locking &

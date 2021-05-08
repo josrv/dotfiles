@@ -16,7 +16,7 @@ theme.bg_normal                                 = "#242424"
 --theme.bg_normal                                 = "#0B0636"
 theme.fg_urgent                                 = "#CC9393"
 theme.bg_urgent                                 = "#006B8E"
-theme.border_width                              = dpi(1)
+theme.border_width                              = dpi(0)
 theme.border_normal                             = "#252525"
 theme.border_focus                              = colors["color4"]
 theme.taglist_fg_focus                          = "#FFFFFF"
@@ -30,5 +30,7 @@ theme.close_icon                                = theme.icon_dir .. "/close.svg"
 theme.useless_gap                               = dpi(4)
 theme.systray_icon_spacing                      = 2
 theme.gap_single_client                         = false
+theme.notification_max_width                    = dpi(400)
+theme.notification_icon_size                    = dpi(48)
 
 return theme

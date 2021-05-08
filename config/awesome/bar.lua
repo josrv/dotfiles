@@ -125,6 +125,7 @@ local weather_icon = bar_icon(theme.icon_dir .. "/question-line.svg")
 local weather =
     lain.widget.weather(
     {
+        APPID = '333e83db0c751252ef0024c8a81db298',
         city_id = 498817,
         notification_preset = {font = "Monospace 9", position = "bottom_right"},
         lang = "ru",

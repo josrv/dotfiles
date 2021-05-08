@@ -10,7 +10,14 @@ local bar = require("bar")
 local bindings = require("bindings")
 local wibox = require("wibox")
 
+local SCREEN_CENTER = 1
+-- local SCREEN_LEFT = 2
+-- local SCREEN_RIGHT = 3
+local SCREEN_LEFT = 1
+local SCREEN_RIGHT = 1
+
 naughty.config.defaults.position = "bottom_right"
+naughty.config.defaults.screen = SCREEN_CENTER
 
 --
 -- ERROR HANDLING
@@ -73,6 +80,7 @@ awful.util.scratchpad =
     app = "termite",
     name = "scratchpad",
     argname = "--name %s",
+    extra = "-e /usr/bin/fish",
     height = 0.45,
     followtag = true,
     settings = function(c)
@@ -97,10 +105,6 @@ awful.util.calculator =
 
 awful.screen.connect_for_each_screen(
     function(s)
-        --local wallpaper = beautiful.wallpaper
-        --if type(wallpaper) == "function" then
-        --    wallpaper = wallpaper(s)
-        --end
         gears.wallpaper.maximized(beautiful.wallpapers[s.index], s, true)
 
         -- Tags
@@ -117,24 +121,24 @@ awful.screen.connect_for_each_screen(
         awful.tag.add(
             "WEB",
             {
-                layout = awful.layout.suit.max,
+                layout = awful.layout.suit.tile,
                 screen = s,
                 icon = theme.icon_dir .. "/global-line.svg",
                 icon_only = true
             }
         )
-        if s.index == 1 then
+        if s.index == SCREEN_CENTER then
             awful.tag.add(
                 "IDE",
                 {
-                    layout = awful.layout.suit.max,
+                    layout = awful.layout.suit.tile,
                     screen = s,
                     icon = theme.icon_dir .. "/braces-line.svg",
                     icon_only = true
                 }
             )
         end
-        if s.index == 2 then
+        if s.index == SCREEN_LEFT then
             awful.tag.add(
                 "CHAT",
                 {
@@ -278,7 +282,7 @@ awful.rules.rules = {
    },
     {
         rule = {class = "Telegram"},
-        properties = {screen = 2, tag = "CHAT", switchtotag = true}
+        properties = {screen = SCREEN_LEFT, tag = "CHAT", switchtotag = true}
     },
     {
         rule = {class = "zoom"},
